@@ -18,45 +18,45 @@ class CadastroController extends Cadastro{
 
     public function signupUser(){
         if ($this -> emptyInput() == false){
-            header("location: /login_test/app/views/cadastro.php?error=emptyinput");
+            header("location: /login_test2/app/views/cadastro.php?error=emptyinput");
             exit();
         }
 
         if ($this -> invalidUid() == false){
-            header("location: /login_test/app/views/cadastro.php?error=username");            
+            header("location: /login_test2/app/views/cadastro.php?error=username");            
             exit();            
         }
 
         if ($this -> invalidEmail() == false){
-            header("location: /login_test/app/views/cadastro.php?error=email");          
+            header("location: /login_test2/app/views/cadastro.php?error=email");          
             exit();            
         }
         
         if ($this -> pwdMatch() == false){
-            header("location: /login_test/app/views/cadastro.php?error=passwordmatch");
+            header("location: /login_test2/app/views/cadastro.php?error=passwordmatch");
             exit();            
         }
 
         $uidCheck = $this -> uidTakenCheck();
         if ($uidCheck === "stmtfailed"){
-            header("location: /login_test/app/views/cadastro.php?error=stmtfailed");
+            header("location: /login_test2/app/views/cadastro.php?error=stmtfailed");
             exit();            
         }
 
         if ($uidCheck == false){
-            header("location: /login_test/app/views/cadastro.php?error=useroremailtaken");
+            header("location: /login_test2/app/views/cadastro.php?error=useroremailtaken");
             exit();            
         }
 
         $result = $this -> setUser($this -> uid, $this -> pwd, $this -> email);
 
         if($result === false){
-            header("location: /login_test/app/views/cadastro.php?error=stmtfailed");
+            header("location: /login_test2/app/views/cadastro.php?error=stmtfailed");
             exit();
         }
         
         //going back to front page
-        header("location: /login_test/app/views/index.php?error=none");
+        header("location: /login_test2/app/views/index.php?error=none");
         die;        
         
 

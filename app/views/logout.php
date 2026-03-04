@@ -8,7 +8,7 @@ $session -> remove('USER');
 //fecha a sessão
 $session -> flush();
 //redireciona para index.php
-header("location:/login_test/app/views/index.php?error=none");
+header("location:/login_test2/app/views/index.php?error=none");
 die;
 
 ?>

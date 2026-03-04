@@ -2,15 +2,15 @@
 
 /* 
 
-__DIR__ é o diretório atual do arquivo init.php (login_test/config)
+__DIR__ é o diretório atual do arquivo init.php (login_test2/config)
 ../app/core/ 
 .. sobe uma pasta, logo: sai de config 
 /app/core/ : entra em app/core
-resultado final: login_test/app/core/
+resultado final: login_test2/app/core/
 
 e assim por diante, formando:
-login_test/app/controllers/
-login_test/app/model/
+login_test2/app/controllers/
+login_test2/app/model/
 
 */
 

@@ -24,14 +24,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="/login_test/public/assets/css/pages/login.css">
+    <link rel="stylesheet" href="/login_test2/public/assets/css/pages/login.css">
 </head>
 <body>
 
 <header>
     <ul class="menu member">
-        <li><a href="/login_test/app/views/index.php">HOME</a></li>
-        <li><a href="/login_test/app/views/cadastro.php">CADASTRAR </a></li>
+        <li><a href="/login_test2/app/views/index.php">HOME</a></li>
+        <li><a href="/login_test2/app/views/cadastro.php">CADASTRAR </a></li>
     </ul>
 </header>
 
@@ -51,7 +51,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             echo '<p class="newpwdsuccess">Your password has been reset!</p>';
         }
         ?>
-        <a href="/login_test/app/views/recuperar-senha.php">Esqueceu sua senha?</a>
+        <a href="/login_test2/app/views/recuperar-senha.php">Esqueceu sua senha?</a>
     </div>
 </div>
 

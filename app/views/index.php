@@ -13,7 +13,7 @@ $session->start_session();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Test</title>
-    <link rel="stylesheet" href="/login_test/public/assets/css/pages/index.css">
+    <link rel="stylesheet" href="/login_test2/public/assets/css/pages/index.css">
 </head>
 <body>
     <header>
@@ -30,15 +30,15 @@ $session->start_session();
                     
                 </li>
                 <li>
-                    <a href="/login_test/app/views/logout.php" class="header-login-a">
+                    <a href="/login_test2/app/views/logout.php" class="header-login-a">
                         SAIR
                     </a>
                 </li>
             <?php
             } else {
             ?>   
-                <li><a href="/login_test/app/views/cadastro.php">CADASTRAR</a></li>
-                <li><a href="/login_test/app/views/login.php" class="header-login-a">ENTRAR</a></li>
+                <li><a href="/login_test2/app/views/cadastro.php">CADASTRAR</a></li>
+                <li><a href="/login_test2/app/views/login.php" class="header-login-a">ENTRAR</a></li>
             <?php
             }
             ?>

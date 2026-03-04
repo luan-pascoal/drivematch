@@ -25,7 +25,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Password</title>
-    <link rel="stylesheet" href="/login_test/public/assets/css/pages/nova-senha.css">
+    <link rel="stylesheet" href="/login_test2/public/assets/css/pages/nova-senha.css">
 </head>
 <body>
 

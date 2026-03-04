@@ -21,13 +21,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="/login_test/public/assets/css/pages/cadastro.css">
+    <link rel="stylesheet" href="/login_test2/public/assets/css/pages/cadastro.css">
 </head>
 <body>
 <header>
     <ul class="menu member">
-        <li><a href="/login_test/app/views/index.php">HOME</a></li>
-        <li><a href="/login_test/app/views/login.php">LOGIN</a></li>
+        <li><a href="/login_test2/app/views/index.php">HOME</a></li>
+        <li><a href="/login_test2/app/views/login.php">LOGIN</a></li>
     </ul>
 </header>
 

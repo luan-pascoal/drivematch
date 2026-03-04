@@ -19,13 +19,13 @@ class NovaSenhaController extends NovaSenha{
     public function newPassword(){
 
         if ($this -> emptyInput() == false){
-            header("location: /login_test/app/views/nova-senha.php?error=newpwdempty"); 
+            header("location: /login_test2/app/views/nova-senha.php?error=newpwdempty"); 
             exit();
         }
 
 
         if ($this -> pwdMatch() == false){
-            header("location: /login_test/app/views/nova-senha.php?error=passwordmatch"); 
+            header("location: /login_test2/app/views/nova-senha.php?error=passwordmatch"); 
             exit();            
         }
 
@@ -35,14 +35,14 @@ class NovaSenhaController extends NovaSenha{
         $result = $this -> checkTokenExpiration($this -> selector, $currentDate);
 
         if ($result === false){
-            header("location: /login_test/app/views/nova-senha.php?error=stmtfailed"); 
+            header("location: /login_test2/app/views/nova-senha.php?error=stmtfailed"); 
             exit();            
         }
 
         //n tem nenhum token com data de expiração ativa 
         //MSG: REENVIAR DADOS  = default error
         if (empty($result)){
-            header("location: /login_test/app/views/nova-senha.php?error=defaulterror"); 
+            header("location: /login_test2/app/views/nova-senha.php?error=defaulterror"); 
             exit();            
         }
 
@@ -57,21 +57,21 @@ class NovaSenhaController extends NovaSenha{
 
         //tokens n batem, reenviar dados = default error
         if ($tokenCheck === false){
-            header("location: /login_test/app/views/nova-senha.php?error=defaulterror"); 
+            header("location: /login_test2/app/views/nova-senha.php?error=defaulterror"); 
             exit();   
         }
 
         $tokenEmail = $token -> pwdResetEmail;
         $user = $this -> getUser($tokenEmail);
         if ($user === false){
-            header("location: /login_test/app/views/nova-senha.php?error=stmtfailed"); 
+            header("location: /login_test2/app/views/nova-senha.php?error=stmtfailed"); 
             exit();            
         }
 
         if (empty($user)){
             //n tem esse email, n pode falar abertamente isso na msg de erro
             //logo, reenviar dados = default error
-            header("location: /login_test/app/views/nova-senha.php?error=defaulterror"); 
+            header("location: /login_test2/app/views/nova-senha.php?error=defaulterror"); 
             exit();            
         } 
             
@@ -79,7 +79,7 @@ class NovaSenhaController extends NovaSenha{
 
         //ou deu erro de statement, ou deu erro no update
         if($password === false){
-            header("location: /login_test/app/views/nova-senha.php?error=defaulterror"); 
+            header("location: /login_test2/app/views/nova-senha.php?error=defaulterror"); 
             exit(); 
         }
        
@@ -87,11 +87,11 @@ class NovaSenhaController extends NovaSenha{
 
         //retorna falso se o email n existir, n pode falar, ent default error
         if($deleteToken  === false){
-            header("location: /login_test/app/views/nova-senha.php?error=defaulterror"); 
+            header("location: /login_test2/app/views/nova-senha.php?error=defaulterror"); 
             exit(); 
         }
             
-        header("location: /login_test/app/views/login.php?newpwd=passwordupdated"); 
+        header("location: /login_test2/app/views/login.php?newpwd=passwordupdated"); 
         die;
 
     }

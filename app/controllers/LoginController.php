@@ -15,33 +15,33 @@ class LoginController extends Login{
     public function loginUser(){
 
     if (!$this->emptyInput()){
-        header("location: /login_test/app/views/login.php?error=emptyinput");
+        header("location: /login_test2/app/views/login.php?error=emptyinput");
         exit();
     }
 
     $result = $this->getUser($this->uid);
 
     if($result === false){
-        header("location: /login_test/app/views/login.php?error=stmtfailed");
+        header("location: /login_test2/app/views/login.php?error=stmtfailed");
         exit();
     }
 
     if(empty($result)){
-        header("location: /login_test/app/views/login.php?error=usernotfound");
+        header("location: /login_test2/app/views/login.php?error=usernotfound");
         exit();
     }
 
     $user = $result[0];
 
     if(!password_verify($this->pwd, $user->password)){
-        header("location: /login_test/app/views/login.php?error=wrongusernameorpassword");
+        header("location: /login_test2/app/views/login.php?error=wrongusernameorpassword");
         exit();
     }
 
     $session = new Session();
     $session->regenerate();
     $session->set('USER', ['id' => $user->users_id, 'username' => $user->username, 'email' => $user->email, 'LOGGED_IN' => 1]);
-    header("location: /login_test/app/views/index.php?error=none");
+    header("location: /login_test2/app/views/index.php?error=none");
     die;
 }
 

@@ -47,7 +47,7 @@ class RecuperarSenhaController extends RecuperarSenha {
 
         if ($checkEmail === false){
             //default error = there was an error
-            header("location: /login_test/app/views/recuperar-senha.php?error=defaulterror");
+            header("location: /login_test2/app/views/recuperar-senha.php?error=defaulterror");
             exit();                        
         }
 
@@ -67,7 +67,7 @@ class RecuperarSenhaController extends RecuperarSenha {
             //se tiver alguem no bd com pwdResetEmail = x, ele retorna 1, se não retorna 0
             //se retornar 0 ou 1 de qualquer jeito vamos ter q criar o token
             if ($result === false){
-                header("location: /login_test/app/views/recuperar-senha.php?error=stmtfailed");
+                header("location: /login_test2/app/views/recuperar-senha.php?error=stmtfailed");
                 exit();            
                 }else{
 
@@ -76,7 +76,7 @@ class RecuperarSenhaController extends RecuperarSenha {
                     //insere o token no bd
                     $insertToken = $this -> setToken($this -> email, $this -> selector, $this -> token, $this -> expires);
                     if($insertToken === false){
-                        header("location: /login_test/app/views/recuperar-senha.php?error=stmtfailed");                        
+                        header("location: /login_test2/app/views/recuperar-senha.php?error=stmtfailed");                        
                         exit();
                     }
             }
@@ -88,7 +88,7 @@ class RecuperarSenhaController extends RecuperarSenha {
 
         //a partir do ? são tudo parâmetros $get
         //a url ficara assim, por ex: http://localhost/logintest/create-new-password.php?selector=abc123&validator=4f8a9c
-        $url = "http://localhost/login_test/app/views/nova-senha.php?selector=" . $this->selector . "&validator=" . bin2hex($this->token);
+        $url = "http://localhost/login_test2/app/views/nova-senha.php?selector=" . $this->selector . "&validator=" . bin2hex($this->token);
         
         require_once __DIR__ . "/../core/phpmailer/src/Exception.php";
         require_once __DIR__ . "/../core/phpmailer/src/PHPMailer.php";
@@ -130,11 +130,11 @@ class RecuperarSenhaController extends RecuperarSenha {
         $mail->AltBody = 'Copy and paste this link into your browser: ' . $url;
 
         if(!$mail->send()){
-            header("location: /login_test/app/views/recuperar-senha.php?error=mailerror");   
+            header("location: /login_test2/app/views/recuperar-senha.php?error=mailerror");   
             exit();
         }
 
-        header("location: /login_test/app/views/recuperar-senha.php?reset=success");
+        header("location: /login_test2/app/views/recuperar-senha.php?reset=success");
         exit();
 }
 }
