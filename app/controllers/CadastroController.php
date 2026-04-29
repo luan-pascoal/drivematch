@@ -2,60 +2,60 @@
 
 class CadastroController extends Cadastro{
 
-    private $uid;
+    private $username;
     private $pwd;
     private $pwdRepeat;
     private $email;
 
-    public function __construct($uid, $pwd, $pwdRepeat, $email){
+    public function __construct($username, $pwd, $pwdRepeat, $email){
 
-        $this -> uid = $uid;
+        $this -> username = $username;
         $this -> pwd = $pwd;
         $this -> pwdRepeat = $pwdRepeat;
         $this -> email = $email;
 
     }
 
-    public function signupUser(){
-        if ($this -> emptyInput() == false){
-            header("location: /login_test2/app/views/cadastro.php?error=emptyinput");
+    public function cadastrarUsuario(){
+
+        if ($this -> inputVazio() == false){
+            header("location: /login_test2/app/views/cadastro.php?error=inputVazio");
             exit();
         }
 
-        if ($this -> invalidUid() == false){
+        if ($this -> usernameInvalido() == false){
             header("location: /login_test2/app/views/cadastro.php?error=username");            
             exit();            
         }
 
-        if ($this -> invalidEmail() == false){
+        if ($this -> emailInvalido() == false){
             header("location: /login_test2/app/views/cadastro.php?error=email");          
             exit();            
         }
         
-        if ($this -> pwdMatch() == false){
+        if ($this -> compararSenhas() == false){
             header("location: /login_test2/app/views/cadastro.php?error=passwordmatch");
             exit();            
         }
 
-        $uidCheck = $this -> uidTakenCheck();
-        if ($uidCheck === "stmtfailed"){
+        $usernameCheck = $this -> checkarUsername();
+        if ($usernameCheck === "stmtfailed"){
             header("location: /login_test2/app/views/cadastro.php?error=stmtfailed");
             exit();            
         }
 
-        if ($uidCheck == false){
+        if ($usernameCheck == false){
             header("location: /login_test2/app/views/cadastro.php?error=useroremailtaken");
             exit();            
         }
 
-        $result = $this -> setUser($this -> uid, $this -> pwd, $this -> email);
+        $resultado = $this -> setUsuario($this -> username, $this -> pwd, $this -> email);
 
-        if($result === false){
+        if($resultado === false){
             header("location: /login_test2/app/views/cadastro.php?error=stmtfailed");
             exit();
         }
         
-        //going back to front page
         header("location: /login_test2/app/views/index.php?error=none");
         die;        
         
@@ -63,85 +63,85 @@ class CadastroController extends Cadastro{
 
 
     //verifica se alguma das variáveis está vazia (n foi preenchida)
-    private function emptyInput(){
+    private function inputVazio(){
 
-        $result; 
+        $resultado; 
 
-        if (empty($this -> uid) || empty($this -> pwd) || empty($this -> pwdRepeat) || empty($this -> email)){
-            $result = false;
+        if (empty($this -> username) || empty($this -> pwd) || empty($this -> pwdRepeat) || empty($this -> email)){
+            $resultado = false;
         }else {
-            $result = true;
+            $resultado = true;
         }
 
-        return $result;
+        return $resultado;
 
     }
 
     //verifica se username digitado pelo usuario corresponde ao padrão desejado 
     //neste caso so pode ter: letras minusculas (a-z), letras maiusculas (A-Z), numeros (0-9) ou espaços vazios ()
-    private function invalidUid(){
+    private function usernameInvalido(){
 
-        $result;
+        $resultado;
 
-        if (!preg_match("/^[a-zA-Z0-9 ]+$/", $this -> uid)){
-            $result = false;
+        if (!preg_match("/^[a-zA-Z0-9 ]+$/", $this -> username)){
+            $resultado = false;
         }else{
-            $result = true;
+            $resultado = true;
         }
 
-        return $result;
+        return $resultado;
 
     }
 
     //verifica se o email digitado pelo usuario é válido
-    private function invalidEmail(){
+    private function emailInvalido(){
 
-        $result;
+        $resultado;
 
         if (!filter_var($this -> email, FILTER_VALIDATE_EMAIL)){
-            $result = false;
+            $resultado = false;
         }else {
-            $result = true;
+            $resultado = true;
         }
 
-        return $result;
+        return $resultado;
 
     }
 
     //verifica se as duas senhas digitadas pelo usuario são iguais
-    private function pwdMatch(){
+    private function compararSenhas(){
 
-        $result;
+        $resultado;
 
         if ($this -> pwd !== $this -> pwdRepeat){
-            $result = false;
+            $resultado = false;
         }else {
-            $result = true;
+            $resultado = true;
         }
 
-        return $result;
+        return $resultado;
 
     }
 
     //checa se o email/username ja existem no bd
-    private function uidTakenCheck(){
+    private function checkarUsername(){
 
-        $result = $this -> checkUser($this -> uid, $this -> email);
+        $resultado = $this -> checarUsuario($this -> username, $this -> email);
 
         //=== compara valor e tipo
 
-        //se $result for false, temos um erro de statement
-        //lembrando q checkUser() pode retornar:
+        //se $resultado for false, temos um erro de statement
+        //lembrando q checarUsuario() pode retornar:
         //false -> erro no statement
         // [] -> nenhum usuário encontrado
         // [obj]  -> usuário já existe
 
-        if ($result === false){
+        if ($resultado === false){
             return "stmtfailed";
         }
 
-        //se $result n está vazio, logo ja existe esse username ou email, logo, retornamos false
-        if (!empty($result)){
+        //se $resultado n está vazio, logo ja existe esse username ou email, logo, retornamos false
+        if (!empty($resultado)){
             return false;
         }
 

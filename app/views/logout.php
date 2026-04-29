@@ -20,7 +20,7 @@ if($session -> exists('USER')){
 
     if($user){
         $rememberModel = new RememberTokens();
-        $remove = $rememberModel -> removeToken($user['id']);
+        $remove = $rememberModel -> removerTokenAntigo($user['id']);
     }
 
 

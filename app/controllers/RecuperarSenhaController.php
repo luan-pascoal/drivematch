@@ -14,7 +14,7 @@ class RecuperarSenhaController extends RecuperarSenha {
     }
 
     //essa função é responsavel por criar os tokens da requisição de mudança de senha 
-    private function generateTokens(){
+    private function gerarTokens(){
         //usaremos dois tokens ($selector e $token)
         //1($selector): usado para encontrar o registro no banco
         //2($token): usado para validar se o token é verdadeiro
@@ -35,23 +35,23 @@ class RecuperarSenhaController extends RecuperarSenha {
 
 
     //essa função é responsável por validar a requisição de mudança de senha e inserir esta requisição no bd 
-    public function validateRequest(){
+    public function validarRequisicao(){
 
         //verifica se esse email existe no bd
-        //checkEmail pode retornar false = erro de statement, obj vazio: n tem esse email no bd, obj n vazio: email valido pra prosseguir
-        //se tratassemos o obj vazio, por ex if (empty($checkemail)), iriamos declarar um get dizendo usernotfound
+        //emailChecado pode retornar false = erro de statement, obj vazio: n tem esse email no bd, obj n vazio: email valido pra prosseguir
+        //se tratassemos o obj vazio, por ex if (empty($emailChecado)), iriamos declarar um get dizendo usernotfound
         //oq é mt perigosos para a segurança do site
-        //ent so tratamos o obj n vazio (!empty($checkEmail)
+        //ent so tratamos o obj n vazio (!empty($emailChecado)
         //se o obj estiver vazio nada acontece 
-        $checkEmail = $this -> emailExists($this -> email);
+        $emailChecado = $this -> checarEmail($this -> email);
 
-        if ($checkEmail === false){
+        if ($emailChecado === false){
             //default error = there was an error
             header("location: /login_test2/app/views/recuperar-senha.php?error=defaulterror");
             exit();                        
         }
 
-        if (!empty($checkEmail)){
+        if (!empty($emailChecado)){
 
             //verifica se este usuario já tem algum token criado, se tiver, remove
             //PQ FAZER ISSO?
@@ -59,14 +59,14 @@ class RecuperarSenhaController extends RecuperarSenha {
             //evitar que 2 emails de confirmação sejam enviados, e 2 tokens criados
             //vamos deletar quaisquer entradas de tokens presentes no banco de dados
             //garantindo que não exista nenhum tokem deste usuario no banco de dados
-            $result = $this -> checkOldTokens($this -> email);
+            $resultado = $this -> checarTokensAntigos($this -> email);
 
             //como usamos rowCount(), seguindo o encadeamento: delete()->where()->run()
             //run(), em caso de delete(), retorna a função rowCount() ou false (erro de statement)
             //run() vai fazer por ex: delete FROM pwdReset WHERE pwdResetEmail = x;
             //se tiver alguem no bd com pwdResetEmail = x, ele retorna 1, se não retorna 0
             //se retornar 0 ou 1 de qualquer jeito vamos ter q criar o token
-            if ($result === false){
+            if ($resultado === false){
 
                 header("location: /login_test2/app/views/recuperar-senha.php?error=stmtfailed");
                 exit();        
@@ -74,10 +74,10 @@ class RecuperarSenhaController extends RecuperarSenha {
                 }else{
 
                     //cria os tokens
-                    $this -> generateTokens();
+                    $this -> gerarTokens();
                     //insere o token no bd
-                    $insertToken = $this -> setToken($this -> email, $this -> selector, $this -> token, $this -> expires);
-                    if($insertToken === false){
+                    $inserirToken = $this -> setToken($this -> email, $this -> selector, $this -> token, $this -> expires);
+                    if($inserirToken === false){
                         header("location: /login_test2/app/views/recuperar-senha.php?error=stmtfailed");                        
                         exit();
                     }
@@ -87,7 +87,7 @@ class RecuperarSenhaController extends RecuperarSenha {
     }
 
     //essa função é responsável por enviar o email de mudança de senha
-    public function sendEmail(){
+    public function enviarEmail(){
 
         //a partir do ? são tudo parâmetros $get
         //a url ficara assim, por ex: http://localhost/logintest/create-new-password.php?selector=abc123&validator=4f8a9c

@@ -3,14 +3,14 @@
 class RecuperarSenha{
 
     //checa se o email existe
-    protected function emailExists($email){
+    protected function checarEmail($email){
 
         return DataBase::table('users')->select()->where("email = :email",["email" => $email]);
 
     }
 
     //verifica se tal usuario já tem um token criado, se tiver remove, explicação em ResetRequestController
-    protected function checkOldTokens($email){
+    protected function checarTokensAntigos($email){
 
         return DataBase::table('pwdReset')->delete()->where("pwdResetEmail = :pwdResetEmail",["pwdResetEmail" => $email]);
 

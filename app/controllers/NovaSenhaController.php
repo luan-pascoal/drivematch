@@ -16,37 +16,37 @@ class NovaSenhaController extends NovaSenha{
 
     }
 
-    public function newPassword(){
+    public function novaSenha(){
 
-        if ($this -> emptyInput() == false){
+        if ($this -> inputVazio() == false){
             header("location: /login_test2/app/views/nova-senha.php?error=newpwdempty"); 
             exit();
         }
 
 
-        if ($this -> pwdMatch() == false){
+        if ($this -> compararSenhas() == false){
             header("location: /login_test2/app/views/nova-senha.php?error=passwordmatch"); 
             exit();            
         }
 
         //pegamos a data atual, para comparar com a data inserida no bd, e checar se os tokens expiraram ou n
-        $currentDate = date("U");
+        $dataAtual = date("U");
 
-        $result = $this -> checkTokenExpiration($this -> selector, $currentDate);
+        $resultado = $this -> checarExpiracaoToken($this -> selector, $dataAtual);
 
-        if ($result === false){
+        if ($resultado === false){
             header("location: /login_test2/app/views/nova-senha.php?error=stmtfailed"); 
             exit();            
         }
 
         //n tem nenhum token com data de expiração ativa 
         //MSG: REENVIAR DADOS  = default error
-        if (empty($result)){
+        if (empty($resultado)){
             header("location: /login_test2/app/views/nova-senha.php?error=defaulterror"); 
             exit();            
         }
 
-        $token = $result[0];
+        $token = $resultado[0];
 
         //convertemos o validator para binario
         //fazemos isso pois iremos comparar com o valor de token q esta inserido no bd, e lá ele esta binario
@@ -62,7 +62,7 @@ class NovaSenhaController extends NovaSenha{
         }
 
         $tokenEmail = $token -> pwdResetEmail;
-        $user = $this -> getUser($tokenEmail);
+        $user = $this -> getUsuario($tokenEmail);
         if ($user === false){
             header("location: /login_test2/app/views/nova-senha.php?error=stmtfailed"); 
             exit();            
@@ -75,7 +75,7 @@ class NovaSenhaController extends NovaSenha{
             exit();            
         } 
             
-        $password = $this -> updateUserPassword($this -> password, $tokenEmail);
+        $password = $this -> atualizarSenhaUsuario($this -> password, $tokenEmail);
 
         //ou deu erro de statement, ou deu erro no update
         if($password === false){
@@ -83,10 +83,10 @@ class NovaSenhaController extends NovaSenha{
             exit(); 
         }
        
-        $deleteToken = $this -> deleteToken($tokenEmail);
+        $tokenRemovido = $this -> removerToken($tokenEmail);
 
         //retorna falso se o email n existir, n pode falar, ent default error
-        if($deleteToken  === false){
+        if($tokenRemovido  === false){
             header("location: /login_test2/app/views/nova-senha.php?error=defaulterror"); 
             exit(); 
         }
@@ -97,31 +97,31 @@ class NovaSenhaController extends NovaSenha{
     }
 
 
-    private function emptyInput(){
+    private function inputVazio(){
 
-        $result; 
+        $resultado; 
 
         if (empty($this -> password) || empty($this -> passwordRepeat)){
-            $result = false;
+            $resultado = false;
         }else {
-            $result = true;
+            $resultado = true;
         }
 
-        return $result;
+        return $resultado;
 
     }
 
-    private function pwdMatch(){
+    private function compararSenhas(){
 
-        $result;
+        $resultado;
 
         if ($this -> password !== $this -> passwordRepeat){
-            $result = false;
+            $resultado = false;
         }else {
-            $result = true;
+            $resultado = true;
         }
 
-        return $result;
+        return $resultado;
 
     }
 

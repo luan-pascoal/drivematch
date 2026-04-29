@@ -12,7 +12,7 @@ __DIR__ é o diretório atual do arquivo init.php (login_test2/config)
 ../app/core/ 
 .. sobe uma pasta, logo: sai de config 
 /app/core/ : entra em app/core
-resultado final: login_test2/app/core/
+resultadoado final: login_test2/app/core/
 
 e assim por diante, formando:
 login_test2/app/controllers/

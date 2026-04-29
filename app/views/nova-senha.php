@@ -13,7 +13,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     //intantiating class ResetPasswordNovaSenhaControllerController
     $resetPassword = new NovaSenhaController($selector, $validator, $password, $passwordRepeat);
 
-    $resetPassword -> newPassword();
+    $resetPassword -> novaSenha();
 
 }
 

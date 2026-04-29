@@ -10,11 +10,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     //intantiating class RecuperarSenhaController
     $resetRequest = new RecuperarSenhaController($userEmail);
 
-    //error handlers and validateRequest
-    $resetRequest -> validateRequest();
+    //error handlers and validarRequisicao
+    $resetRequest -> validarRequisicao();
 
-    //sendEmail
-    $resetRequest -> sendEmail();
+    //enviarEmail
+    $resetRequest -> enviarEmail();
 
 }
 

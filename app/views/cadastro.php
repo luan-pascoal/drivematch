@@ -4,13 +4,13 @@ include __DIR__ . '/../../config/init.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $uid = $_POST['uid'];
+    $username = $_POST['username'];
     $pwd = $_POST['pwd'];
     $pwdRepeat = $_POST['pwdRepeat'];
     $email = $_POST['email'];
 
-    $signup = new CadastroController($uid, $pwd, $pwdRepeat, $email);
-    $signup->signupUser();
+    $signup = new CadastroController($username, $pwd, $pwdRepeat, $email);
+    $signup->cadastrarUsuario();
 }
 
 ?>
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h4>SIGN UP</h4>
         <p>Don't have an account yet? Sign up here!</p>
         <form action = "<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="POST">
-            <input type="text" name="uid" placeholder="Username">
+            <input type="text" name="username" placeholder="Username">
             <input type="password" name="pwd" placeholder="Password">
             <input type="password" name="pwdRepeat" placeholder="Repeat Password">
             <input type="text" name="email" placeholder="Email">

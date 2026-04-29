@@ -5,17 +5,17 @@ include __DIR__ . '/../../config/init.php';
 //grabbing data
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-    $uid = $_POST['uid'];
+    $username = $_POST['username'];
     $pwd = $_POST['pwd'];
     
     //se o post da checkbox remember  estiver vazio, logo $remember receberá null
     $remember = $_POST['remember'] ?? null;
 
     //intantiating class LoginController
-    $login = new LoginController($uid, $pwd, $remember);
+    $login = new LoginController($username, $pwd, $remember);
 
     //error handlers and signup user
-    $login -> loginUser();
+    $login -> loginUsuario();
 
 }
 
@@ -43,7 +43,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <h4>LOGIN</h4>
         <br>
         <form action = "<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="POST">
-            <input type="text" name="uid" placeholder="Username" required>
+            <input type="text" name="username" placeholder="Username" required>
             <br>
             <input type="password" name="pwd" placeholder="Password" required>
             <br>

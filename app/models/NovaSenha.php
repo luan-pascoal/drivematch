@@ -2,30 +2,30 @@
 
 class NovaSenha{
 
-    protected function checkTokenExpiration($pwdResetSelector, $currentDate){
+    protected function checarExpiracaoToken($pwdResetSelector, $dataAtual){
 
-        return DataBase::table('pwdreset')-> select() ->where("pwdResetSelector = :pwdResetSelector AND pwdResetExpires >= :currentDate", 
-        ["pwdResetSelector" => $pwdResetSelector, "currentDate" => $currentDate]);
+        return DataBase::table('pwdreset')-> select() ->where("pwdResetSelector = :pwdResetSelector AND pwdResetExpires >= :dataAtual", 
+        ["pwdResetSelector" => $pwdResetSelector, "dataAtual" => $dataAtual]);
 
     }
 
-    protected function getUser($email){
+    protected function getUsuario($email){
 
         return DataBase::table('users')-> select() ->where("email = :email", ["email" => $email]);     
 
     }
 
-    protected function updateUserPassword($password, $email){
+    protected function atualizarSenhaUsuario($password, $email){
 
-        $newPassword = password_hash($password, PASSWORD_DEFAULT);
+        $novaSenha = password_hash($password, PASSWORD_DEFAULT);
 
-        $arr['password'] = $newPassword;
+        $arr['password'] = $novaSenha;
 
         return DataBase::table('users')-> update($arr) ->where("email = :email", ["email" => $email]);     
 
     }
 
-    protected function deleteToken($email){
+    protected function removerToken($email){
 
         return DataBase::table('pwdreset')-> delete() ->where("pwdResetEmail = :pwdResetEmail", ["pwdResetEmail" => $email]);  
 

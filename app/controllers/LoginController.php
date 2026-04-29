@@ -2,7 +2,7 @@
 
 class LoginController extends Login{
 
-    private $uid;
+    private $username;
     private $pwd;
     private $remember;
     private $selector;
@@ -10,34 +10,34 @@ class LoginController extends Login{
     private $expires;
     private $maxexpires;
 
-    public function __construct($uid, $pwd, $remember){
+    public function __construct($username, $pwd, $remember){
 
-        $this -> uid = $uid;
+        $this -> username = $username;
         $this -> pwd = $pwd;
         $this -> remember = $remember;
 
     }
     
-    public function loginUser(){
+    public function loginUsuario(){
 
-    if (!$this->emptyInput()){
-        header("location: /login_test2/app/views/login.php?error=emptyinput");
+    if (!$this->inputVazio()){
+        header("location: /login_test2/app/views/login.php?error=inputVazio");
         exit();
     }
 
-    $result = $this->getUser($this->uid);
+    $resultado = $this->getUsuario($this->username);
 
-    if($result === false){
+    if($resultado === false){
         header("location: /login_test2/app/views/login.php?error=stmtfailed");
         exit();
     }
 
-    if(empty($result)){
+    if(empty($resultado)){
         header("location: /login_test2/app/views/login.php?error=usernotfound");
         exit();
     }
 
-    $user = $result[0];
+    $user = $resultado[0];
 
     if(!password_verify($this->pwd, $user->password)){
         header("location: /login_test2/app/views/login.php?error=wrongusernameorpassword");
@@ -51,14 +51,14 @@ class LoginController extends Login{
 
     if ($this -> remember !== NULL){
 
-        $this -> generateTokens();
+        $this -> gerarTokens();
 
         $rememberModel = new RememberTokens();
 
         // REMOVE tokens antigos antes de criar novo
-        $rememberModel->removeToken($user->id);
+        $rememberModel->removerTokenAntigo($user->id);
 
-        $insert = $rememberModel -> insertToken($user->id, $this -> selector, $this -> validator, $this-> expires, $this -> maxexpires);
+        $insert = $rememberModel -> inserirToken($user->id, $this -> selector, $this -> validator, $this-> expires, $this -> maxexpires);
 
         if ($insert === false){
             header("location: /login_test2/app/views/login.php?error=stmtfailed");                        
@@ -72,21 +72,21 @@ class LoginController extends Login{
     die;
 }
 
-    private function emptyInput(){
+    private function inputVazio(){
 
-        $result; 
+        $resultado; 
 
-        if (empty($this -> uid) || empty($this -> pwd)){
-            $result = false;
+        if (empty($this -> username) || empty($this -> pwd)){
+            $resultado = false;
         }else {
-            $result = true;
+            $resultado = true;
         }
 
-        return $result;
+        return $resultado;
 
     }
 
-    private function generateTokens(){
+    private function gerarTokens(){
 
         $this -> selector = bin2hex(random_bytes(8));
 

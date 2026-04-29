@@ -143,7 +143,7 @@ class Session{
         //se ja estiver vencido, remove o token do bd
         if ($token -> expires < date("U")){
             $rememberModel = new RememberTokens();
-            $rememberModel->removeToken($token->user_id);
+            $rememberModel->removerTokenAntigo($token->user_id);
             return;
         }
 
@@ -151,7 +151,7 @@ class Session{
         //se ja estiver vencido, remove o token do bd
         if ($token -> maxexpires < date("U")){
             $rememberModel = new RememberTokens();
-            $rememberModel->removeToken($token->user_id);
+            $rememberModel->removerTokenAntigo($token->user_id);
             return;
         }
 
@@ -174,11 +174,11 @@ class Session{
 
         //rotaciona token
         $rememberModel = new RememberTokens();
-        $rememberModel -> removeToken($token -> user_id);
+        $rememberModel -> removerTokenAntigo($token -> user_id);
         $newSelector = bin2hex(random_bytes(8));
         $newValidator = random_bytes(32);
         $newExpires = date("U") + ((60*60*24)*7);
-        $rememberModel -> insertToken($token -> user_id, $newSelector, $newValidator, $newExpires, $token -> maxexpires);
+        $rememberModel -> inserirToken($token -> user_id, $newSelector, $newValidator, $newExpires, $token -> maxexpires);
         setcookie("rememberme", $newSelector . ":" . bin2hex($newValidator), $newExpires, "/");
 
     }
