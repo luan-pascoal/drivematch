@@ -7,9 +7,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $uid = $_POST['uid'];
     $pwd = $_POST['pwd'];
+    
+    //se o post da checkbox remember  estiver vazio, logo $remember receberá null
+    $remember = $_POST['remember'] ?? null;
 
     //intantiating class LoginController
-    $login = new LoginController($uid, $pwd);
+    $login = new LoginController($uid, $pwd, $remember);
 
     //error handlers and signup user
     $login -> loginUser();
@@ -40,9 +43,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <h4>LOGIN</h4>
         <br>
         <form action = "<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="POST">
-            <input type="text" name="uid" placeholder="Username">
-            <input type="password" name="pwd" placeholder="Password">
+            <input type="text" name="uid" placeholder="Username" required>
             <br>
+            <input type="password" name="pwd" placeholder="Password" required>
+            <br>
+            <input type="checkbox" name="remember"> Remember me 
+            <br>
+            <a href="/login_test2/app/views/recuperar-senha.php">Esqueceu sua senha?</a> 
+            <br> 
             <button type="submit" name="submit">LOGIN</button>
         </form>
         <br>
@@ -51,7 +59,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             echo '<p class="newpwdsuccess">Your password has been reset!</p>';
         }
         ?>
-        <a href="/login_test2/app/views/recuperar-senha.php">Esqueceu sua senha?</a>
     </div>
 </div>
 

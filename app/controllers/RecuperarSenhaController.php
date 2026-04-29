@@ -67,8 +67,10 @@ class RecuperarSenhaController extends RecuperarSenha {
             //se tiver alguem no bd com pwdResetEmail = x, ele retorna 1, se não retorna 0
             //se retornar 0 ou 1 de qualquer jeito vamos ter q criar o token
             if ($result === false){
+
                 header("location: /login_test2/app/views/recuperar-senha.php?error=stmtfailed");
-                exit();            
+                exit();        
+
                 }else{
 
                     //cria os tokens
@@ -79,6 +81,7 @@ class RecuperarSenhaController extends RecuperarSenha {
                         header("location: /login_test2/app/views/recuperar-senha.php?error=stmtfailed");                        
                         exit();
                     }
+                    
             }
             }
     }
@@ -138,9 +141,6 @@ class RecuperarSenhaController extends RecuperarSenha {
         exit();
 }
 }
-
-        
-
     
 ?>
 

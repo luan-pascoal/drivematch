@@ -59,7 +59,6 @@ class CadastroController extends Cadastro{
         header("location: /login_test2/app/views/index.php?error=none");
         die;        
         
-
     }
 
 

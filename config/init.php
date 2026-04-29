@@ -1,5 +1,11 @@
 <?php
 
+define ("db_host", "localhost");
+define ("db_user", "root");
+define ("db_password", "");
+define ("db_name", "login_test");
+
+
 /* 
 
 __DIR__ é o diretório atual do arquivo init.php (login_test2/config)
@@ -38,10 +44,8 @@ spl_autoload_register(function ($classname) {
     }
 });
 
-define ("db_host", "localhost");
-define ("db_user", "root");
-define ("db_password", "");
-define ("db_name", "login_test");
+$session = new Session();
+$session -> checkRememberMe();
 
 
 ?>
