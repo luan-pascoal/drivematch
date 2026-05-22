@@ -1,0 +1,17 @@
+.header-foto {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+}
+
+.header-foto span {
+    font-size: 18px;
+}
+
+.botao-icon {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
