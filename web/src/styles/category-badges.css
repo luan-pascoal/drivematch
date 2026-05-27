@@ -1,0 +1,52 @@
+/* Badges de categoria CNH — somente letras A, B, AB */
+
+.badge-cat-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.badge-cat {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  border: 1px solid transparent;
+  line-height: 1.2;
+}
+
+.badge-cat--a {
+  background: rgba(227, 0, 15, 0.1);
+  color: #9a0009;
+  border-color: rgba(227, 0, 15, 0.25);
+}
+
+.badge-cat--b {
+  background: rgba(10, 75, 170, 0.1);
+  color: var(--color-primary-dark);
+  border-color: rgba(10, 75, 170, 0.25);
+}
+
+.badge-cat--ab {
+  background: rgba(220, 163, 35, 0.18);
+  color: #7a5a10;
+  border-color: rgba(220, 163, 35, 0.4);
+}
+
+.badge-cat--default {
+  background: var(--color-gray-100);
+  color: var(--text-muted);
+  border-color: var(--color-gray-200);
+}
+
+/* Leve destaque na página do instrutor */
+.badge-cat-list--profile .badge-cat {
+  font-size: 0.9rem;
+  min-width: 2rem;
+  padding: 0.3rem 0.55rem;
+}

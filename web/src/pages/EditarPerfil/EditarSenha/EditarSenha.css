@@ -1,0 +1,21 @@
+.page-back {
+    display: inline-block;
+    margin-bottom: var(--space-6);
+    color: var(--text);
+    text-decoration: none;
+}
+
+.page-back:hover {
+    text-decoration: underline;
+}
+
+.editar-senha-card {
+    max-width: 680px;
+}
+
+.editar-senha-actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}

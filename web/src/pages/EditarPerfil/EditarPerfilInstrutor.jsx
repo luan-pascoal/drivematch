@@ -1,0 +1,8 @@
+export function EditarPerfilInstrutor(  ){
+
+return (
+<>
+</>
+);
+
+}

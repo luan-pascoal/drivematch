@@ -1,0 +1,119 @@
+/* =========================================
+   PÁGINA DE ERRO E DESENVOLVIMENTO
+   ========================================= */
+
+   .error-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh; /* Ocupa quase a tela toda */
+    padding: 20px;
+    background-color: var(--cor-cinza-claro, #F5F5F5);
+    font-family: var(--fonte-apoio, 'Aleo', serif);
+    color: var(--cor-chumbo, #333333);
+  }
+  
+  .error-page__card {
+    background-color: var(--cor-branco, #FFFFFF);
+    max-width: 550px;
+    width: 100%;
+    padding: 50px 30px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .error-page__503 {
+    /* A linha dourada em cima dá o tom de alerta de forma elegante */
+    border-top: 8px solid var(--cor-secundaria, #DCA323); 
+  }
+
+  .error-page__404 {
+    /* A linha vermelha em cima dá o tom de alerta de forma elegante */
+    border-top: 8px solid var(--color-tertiary, #E3000F); 
+  }
+  
+  .error-page__icone {
+    font-size: 5rem;
+    margin-bottom: 20px;
+    line-height: 1;
+  }
+  
+  .error-page__titulo {
+    font-family: var(--fonte-principal, 'Montserrat', sans-serif);
+    color: var(--cor-primaria, #0A4BAA);
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 15px 0;
+  }
+  
+  .error-page__subtitulo {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 35px;
+  }
+  
+  /* --- Botões --- */
+  .error-page__acoes {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap; /* Ajuda no responsivo (celular) */
+    margin-bottom: 30px;
+  }
+  
+  .error-page__acoes .btn {
+    font-family: var(--fonte-principal, 'Montserrat', sans-serif);
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 12px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+  }
+  
+  /* Botão de Voltar (Secundário - Outlined) */
+  .btn--voltar {
+    background-color: transparent;
+    color: var(--cor-primaria, #0A4BAA);
+    border: 2px solid var(--cor-primaria, #0A4BAA) !important;
+  }
+  
+  .btn--voltar:hover {
+    background-color: #E8EEF8; /* Azul bem clarinho */
+  }
+  
+  /* Botão de Home (Primário) */
+  .btn--home {
+    background-color: var(--cor-primaria, #0A4BAA);
+    color: var(--cor-branco, #FFFFFF);
+    border: 2px solid var(--cor-primaria, #0A4BAA) !important;
+  }
+  
+  .btn--home:hover {
+    background-color: #083A85; /* Azul mais escuro */
+  }
+  
+  /* --- Texto do Cronômetro --- */
+  .error-page__timer {
+    font-size: 0.9rem;
+    color: #666666;
+  }
+  
+  /* =========================================
+     RESPONSIVIDADE (Celulares)
+     ========================================= */
+  @media (max-width: 480px) {
+    .error-page__titulo {
+      font-size: 1.8rem;
+    }
+    
+    .error-page__acoes {
+      flex-direction: column; /* Coloca um botão embaixo do outro */
+    }
+  
+    .error-page__acoes .btn {
+      width: 100%; /* Botões ocupam 100% da largura no celular */
+    }
+  }
