@@ -19,9 +19,64 @@
     justify-content: flex-start;
 }
 
+.foto__body {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
 @media (min-width: 960px) {
     .editar-perfil-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         align-items: start;
     }
+}
+
+
+.foto-upload__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.foto-upload__preview {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--color-white);
+    box-shadow: var(--shadow-sm);
+}
+.foto-upload__text {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-gray-700);
+    text-align: center;
+}
+
+.foto-upload__hint {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+.foto-upload__area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    border: 2px dashed var(--color-gray-200);
+    border-radius: var(--radius-md);
+    background: var(--color-gray-100);
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease;
 }

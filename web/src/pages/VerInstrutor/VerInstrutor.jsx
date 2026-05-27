@@ -5,7 +5,7 @@ import { CategoryBadges } from '../../components/instructors/CategoryBadges';
 import { buscarInstrutorPorId } from '../../data/instrutoresMock';
 import './VerInstrutor.css';
 
-export function VerInstrutor({ usuario, dadosUsuario }) {
+export function VerInstrutor({ usuario, dadosUsuario, carregarUsuario }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const instrutor = buscarInstrutorPorId(id);
@@ -71,13 +71,13 @@ export function VerInstrutor({ usuario, dadosUsuario }) {
   if (!instrutor) {
     return (
       <AppLayout headerRight={
-        dadosUsuario ? <SiteHeaderLoggedActions usuario={dadosUsuario} /> : <SiteHeaderGuestActions />
+        usuario?.logado ? <SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} /> : <SiteHeaderGuestActions />
       }>
         <div className="instrutor-not-found">
           <h1>Instrutor não encontrado</h1>
           <p className="muted">O perfil que você procura não existe ou foi removido.</p>
           <Link className="btn btn--square btn--primary" to="/">
-            Voltar para a página inicial
+            ← Voltar para a página inicial
           </Link>
         </div>
       </AppLayout>
@@ -87,7 +87,7 @@ export function VerInstrutor({ usuario, dadosUsuario }) {
   return (
     <AppLayout
       headerRight={
-        dadosUsuario ? <SiteHeaderLoggedActions usuario={dadosUsuario} /> : <SiteHeaderGuestActions />
+        usuario?.logado ? <SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} /> : <SiteHeaderGuestActions />
       }
       footerRight={`Perfil de ${instrutor.nome}`}
     >

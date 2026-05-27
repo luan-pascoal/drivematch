@@ -28,7 +28,7 @@ function App() {
   // Verifica a sessão ativa (/api/eu), atualiza o state usuario e já carrega o perfil completo via buscarDadosUsuario()
   const carregarUsuario = async () => {
     try {
-      const response = await axios.get('https://matchmarcha.infinityfree.me/api/eu', { withCredentials: true });
+      const response = await axios.get('/api/eu', { withCredentials: true });
       const dadosLogin = response.data;
       setUsuario(dadosLogin);
       if (dadosLogin?.logado && dadosLogin?.usuario?.id) {
@@ -67,9 +67,9 @@ function App() {
 
       <Route
         path="/instrutor/:id"
-        element={<VerInstrutor usuario={usuario} dadosUsuario={dadosUsuario} />}
+        element={<VerInstrutor usuario={usuario} dadosUsuario={dadosUsuario} carregarUsuario={carregarUsuario} />}
       />
-      <Route path="/termos" />
+      
       <Route
         path="/editar-perfil"
         element={
@@ -82,16 +82,20 @@ function App() {
         path="/editar-senha"
         element={
           <PrivateRoute usuario={usuario} tipo="logado">
-              <EditarSenha />
+              <EditarSenha usuario={usuario} dadosUsuario={dadosUsuario} atualizarUsuario={atualizarUsuario} carregarUsuario={carregarUsuario}/>
           </PrivateRoute>
         }
       />
+
 
       
       <Route path="/mensagens" element={<ErrorPage tipo="desenvolvimento" />} />
       <Route path="/minhas-aulas" element={<ErrorPage tipo="desenvolvimento" />} />
       <Route path="/ajuda" element={<ErrorPage tipo="desenvolvimento" />} />
       <Route path="/termos" element={<ErrorPage tipo="desenvolvimento" />} />
+
+      <Route path="/esqueci-senha" element={<ErrorPage tipo="desenvolvimento" />} />
+      <Route path="/cadastro-instrutor" element={<ErrorPage tipo="desenvolvimento" />} />
 
       <Route path="*" element={<ErrorPage tipo="404" />} />
     </Routes>

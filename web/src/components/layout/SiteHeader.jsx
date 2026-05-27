@@ -32,8 +32,8 @@ export function SiteHeaderGuestActions() {
 }
 
 /** Botões e Dropdown do canto superior direito para Usuários Logados (Alunos) */
-export function SiteHeaderLoggedActions({ usuario }) {
-  // 1. O hook useNavigate DEVE ficar aqui, logo no topo do componente
+export function SiteHeaderLoggedActions({ usuario, carregarUsuario }) {
+  
   const navigate = useNavigate();
   
   // Estado para controlar se o dropdown está aberto ou não
@@ -47,6 +47,7 @@ export function SiteHeaderLoggedActions({ usuario }) {
     setMenuAberto(!menuAberto);
   };
 
+
   // Efeito para fechar o dropdown se o usuário clicar fora dele
   useEffect(() => {
     function fecharAoClicarFora(event) {
@@ -58,17 +59,22 @@ export function SiteHeaderLoggedActions({ usuario }) {
     return () => document.removeEventListener("mousedown", fecharAoClicarFora);
   }, []);
 
-  // 2. A função de logout agora fica AQUI DENTRO, onde ela tem acesso ao 'navigate'
+
+
+
+
   const fazerLogout = async () => {
     try {
-      const resposta = await axios.delete('https://matchmarcha.infinityfree.me/api/logout');
+      const resposta = await axios.delete('/api/logout');
       
       if (resposta.status === 200 && resposta.data.sucesso === true) {
-        // Redireciona para a home
-        navigate('/');
         
-        // recarregar a página forçadamente ou atualizar o estado do usuário
-        window.location.reload(); 
+
+        await carregarUsuario();
+        // redireciona
+        navigate('/');
+
+        
       } else {
         console.error('Erro ao fazer logout:', resposta.data.mensagem);
       }
@@ -77,8 +83,12 @@ export function SiteHeaderLoggedActions({ usuario }) {
     }
   };
 
-  // Extrair apenas o primeiro nome do usuário
+
+
+  // Pega apenas o primeiro nome do usuário
   const primeiroNome = usuario?.nome?.split(' ')[0] || 'Usuário';
+
+
 
   return (
     <div className="user-menu" ref={menuRef}>
@@ -88,15 +98,16 @@ export function SiteHeaderLoggedActions({ usuario }) {
         onClick={alternarMenu}
         aria-expanded={menuAberto}
         aria-haspopup="true"
-        aria-label="Abrir menu do usuário"
+        aria-label="Abrir menu"
       >
         <img 
           className="user-menu__avatar" 
           src={ usuario?.foto
-          ? `https://matchmarcha.infinityfree.me/uploads/${usuario.foto}`
+          ? `http://localhost/MatchMarcha/uploads/${usuario.foto}`
           : `https://ui-avatars.com/api/?name=${primeiroNome}&background=0A4BAA&color=FFFFFF`} 
           alt={`Foto de ${primeiroNome}`} 
         />
+        
         <span className="user-menu__nome">{primeiroNome}</span>
         
         <span className={`user-menu__seta ${menuAberto ? 'aberta' : ''}`}>▼</span>

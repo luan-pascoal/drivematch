@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MsgErrosBackEnd } from '../../components/MsgErrosBackEnd';
 import { AlertaSucesso } from '../../components/AlertaSucesso';
 import { AppLayout } from '../../components/layout/AppLayout';
@@ -9,45 +9,37 @@ import axios from 'axios';
 import validator from 'validator';
 import './EditarPerfilUsuario.css';
 
-function HeaderActions({ dadosUsuario }) {
-    return (
-        <>
-            <span className="home-header-user__name" title={dadosUsuario?.nome}>
-                Olá, {dadosUsuario?.nome || "usuário"}
-            </span>
-            <Link className="btn btn--square btn--entrar" to="/">
-                Página inicial
-            </Link>
-        </>
-    );
-}
 
 export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarUsuario, carregarUsuario }) {
 
     // reset => função do React Hook Form que preenche o formulário com valores definidos
     // isDirty => boolean do React Hook Form que indica se o usuário alterou algum campo
-    const { register, handleSubmit, reset, setValue, formState: { errors, isDirty } } = useForm();
+    const { register, handleSubmit, reset, unregister, setValue, watch, formState: { errors, isDirty } } = useForm();
 
     // State que controla o texto do alerta de sucesso
-    // Se tiver texto, o AlertaSucesso aparece; se for vazio, some
     const [alertaSucesso, setAlertaSucesso] = useState("");
 
+    //array com erros que vierem do back
     const [arrayErrosBackend, setArrayErrosBackend] = useState([]);
 
     const [confirmarRemocao, setConfirmarRemocao] = useState(false);
     const [msgSucessoFoto, setMsgSucessoFoto] = useState("");
     const [msgErroFoto, setMsgErroFoto] = useState("");
     const [fotoSelecionada, setFotoSelecionada] = useState(null);
-    const [nomeArquivoFoto, setNomeArquivoFoto] = useState("");
     const [carregandoFoto, setCarregandoFoto] = useState(false);
+
+    const [previewFoto, setPreviewFoto] = useState(null);
+
+    const [msgSucesso, setMsgSucesso] = useState('');
+
+    const inputFotoRef = useRef(null);
+    
 
     const navigate = useNavigate();
 
-    // useLocation => retorna informações da rota atual, incluindo o state que pode vir de outra tela 
-    // via navigate("/editar-perfil", { state: { msgSucesso: "..." } })
     const location = useLocation();
 
-    // Roda quando o component aparece na tela
+    
     useEffect(() => {
 
         // Se a location tiver um state.msgSucesso
@@ -58,6 +50,28 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
 
         }
     }, [])
+
+    const watchFoto = watch('foto');
+
+    useEffect(() => {
+
+        const arquivo = watchFoto?.[0];
+    
+        if (!arquivo) {
+          setPreviewFoto(null);
+          return;
+        }
+    
+        const url = URL.createObjectURL(arquivo);
+    
+        setPreviewFoto(url);
+    
+        return () => URL.revokeObjectURL(url);
+    
+    }, [watchFoto]);
+
+
+
 
     useEffect(() => {
 
@@ -87,23 +101,21 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
         };
     }, [isDirty, fotoSelecionada]);
 
-    // Incluímos "usuario" no dependency array porque o state começa como null e depois é preenchido com os dados vindos da API
-    // Quando esse valor muda, o useEffect precisa rodar novamente para garantir que o formulário seja preenchido corretamente
-
-    // Já o "reset" também é incluído porque ele vem do React Hook Form
-    // Como regra geral, qualquer valor externo usado dentro do useEffect (state, props ou funções de hooks) 
-    // deve ser declarado nas dependências, para evitar comportamento inconsistente e garantir previsibilidade
+   
 
     const salvar = async (data) => {
 
         if (!isDirty) {
 
-            navigate('/');
+            setMsgSucesso('Todos os dados estão salvos!')
+            setTimeout(() => {
+                setMsgSucesso('');
+              }, 5000);
             return;
 
         }
 
-        const resposta = await axios.put('https://matchmarcha.infinityfree.me/api/usuarios/', {
+        const resposta = await axios.put('/api/usuarios/', {
             nome: data.nome,
             email: data.email,
             genero: data.genero
@@ -122,8 +134,12 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
             await atualizarUsuario();
             await carregarUsuario();
 
-            navigate("/", { state: { msgSucesso: "Perfil atualizado com sucesso!" } });
+            setMsgSucesso('Perfil atualizado com sucesso!')
+            // navigate("/", { state: { msgSucesso: "Perfil atualizado com sucesso!" } });
 
+            setTimeout(() => {
+                setMsgSucesso('');
+              }, 5000);
         }
 
         if (resposta.status === 422) {
@@ -153,7 +169,6 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
 
     const selecionarFoto = (event) => {
         const img = event.target.files[0];
-
         if (!img) return;
 
         const erroValidacao = validarFoto(img);
@@ -162,20 +177,20 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
             setMsgErroFoto(erroValidacao);
             setMsgSucessoFoto("");
             setFotoSelecionada(null);
-            setNomeArquivoFoto("");
             return;
         }
 
         setMsgErroFoto("");
         setMsgSucessoFoto("");
         setFotoSelecionada(img);
-        setNomeArquivoFoto(img.name);
+
+        
     };
 
-    const salvarFoto = async (event) => {
-        event.preventDefault();
+    const salvarFoto = async (data) => {
+        // event.preventDefault();
 
-        if (!fotoSelecionada) {
+        if (!data.foto || !data.foto[0]) {
             setMsgErroFoto("Selecione uma nova foto para continuar.");
             setMsgSucessoFoto("");
             return;
@@ -185,8 +200,11 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
         setMsgErroFoto("");
         setMsgSucessoFoto("");
 
+        
+
         const formData = new FormData();
-        formData.append("foto", fotoSelecionada);
+        formData.append("foto", data.foto[0]);
+        
 
         const resposta = await axios.post("/api/usuarios/foto", formData, {
             headers: {
@@ -200,12 +218,20 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
             setMsgSucessoFoto(resposta.data.mensagem);
             setArrayErrosBackend([]);
             setFotoSelecionada(null);
-            setNomeArquivoFoto("");
+            setPreviewFoto(null);
+
+            setValue('foto', null);
+
+            if (inputFotoRef.current) {
+                inputFotoRef.current.value = "";
+            }
+            
             await atualizarUsuario();
+            await carregarUsuario();
 
             setTimeout(() => {
                 setMsgSucessoFoto("");
-            }, 2000);
+            }, 5000);
         }
 
         if (resposta.status === 422) {
@@ -237,12 +263,12 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
     };
 
     const srcFoto = dadosUsuario?.foto
-        ? `https://matchmarcha.infinityfree.me/uploads/${dadosUsuario.foto}`
+        ? `http://localhost/MatchMarcha/uploads/${dadosUsuario.foto}`
         : null;
 
     const removerConta = async () => {
 
-        const resposta = await axios.delete('https://matchmarcha.infinityfree.me/api/usuarios', {
+        const resposta = await axios.delete('/api/usuarios', {
             validateStatus: () => true,
             withCredentials: true
         })
@@ -274,7 +300,7 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
 
     return (
         <AppLayout
-            headerRight={<SiteHeaderLoggedActions usuario={dadosUsuario} /> || <SiteHeaderGuestActions />}
+            headerRight={<SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} /> || <SiteHeaderGuestActions />}
             footerRight="Edição de perfil"
         >
             {/* Se alertaSucesso tiver texto, renderiza o AlertaSucesso
@@ -285,7 +311,7 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
             <div className="editar-perfil-topo">
                 <h1 className="title">Editar perfil</h1>
                 <p className="subtitle">
-                    Atualize foto e dados pessoais em formulários separados.
+                    Atualize seus dados pessoais.
                 </p>
             </div>
             {/* Erro em Exibir os Dados do Usuário */}
@@ -295,7 +321,7 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
                 </div>
             )}
             <div className="editar-perfil-grid">
-                <form className="card" onSubmit={salvarFoto}>
+                <form className="card" onSubmit={handleSubmit(salvarFoto)}>
                     <div className="card__header">
                         <h2 className="card__title">Atualizar Foto</h2>
                         <p className="card__subtitle">
@@ -304,35 +330,71 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
                     </div>
 
                     <div className="card__body stack">
-                        <div className="field">
-                            <span className="label">Foto atual</span>
-                            {srcFoto ? (
+                        <div className="foto__body">
+
+                            <div className="field">
+                                <span className="label">Foto atual</span>
+                                {srcFoto ? (
+                                    <img
+                                        src={srcFoto}
+                                        width="120"
+                                        className="editar-perfil-foto"
+                                        alt="Foto de perfil atual"
+                                    />
+                                ) : (
+                                    <p className="hint">Nenhuma foto cadastrada no momento.</p>
+                                )}
+                            </div>
+                            <div className="field">
+                                <span className="label">Nova foto</span>
+                                
+                                {previewFoto ? (
                                 <img
-                                    src={srcFoto}
-                                    width="120"
                                     className="editar-perfil-foto"
-                                    alt="Foto de perfil atual"
+                                    width="120"
+                                    src={previewFoto}
+                                    alt="Pré-visualização da nova foto"
                                 />
-                            ) : (
-                                <p className="hint">Nenhuma foto cadastrada no momento.</p>
-                            )}
+                                ) : null}
+                            </div>
                         </div>
+                        
 
                         <div className="field">
-                            <label htmlFor="nova-foto" className="label">Nova foto</label>
+                           
+                            <label htmlFor="nova-foto" className="label foto-upload__area">
+                            
+                            
+                                
+                                <p className="foto-upload__text">Escolher foto de perfil
+                                </p>
+                                <p className="foto-upload__hint">PNG, JPEG ou WebP · máximo 2 MB</p>
+                                </label>
                             <input
                                 id="nova-foto"
-                                className="input"
+                                className="foto-upload__input"
+                                ref={inputFotoRef}
                                 type="file"
-                                accept="image/png,image/jpeg,image/webp"
                                 onChange={selecionarFoto}
+                                accept="image/png,image/jpeg,image/webp"
+                                {...register('foto', {
+                                // required: true,
+                                validate: (files) => {
+                                    
+                                    const file = files?.[0];
+                                    
+                                    
+                                    if (!file) return true;
+                                    if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
+                                    return 'Tipo de arquivo inválido';
+                                    }
+                                    if (file.size > 2 * 1024 * 1024) {
+                                    return 'Arquivo deve ter no máximo 2MB';
+                                    }
+                                    return true;
+                                },
+                                })}
                             />
-                            <p className="hint">
-                                Formatos: PNG, JPG ou WEBP. Tamanho máximo: 2MB.
-                            </p>
-                            {nomeArquivoFoto && (
-                                <p className="hint">Arquivo selecionado: {nomeArquivoFoto}</p>
-                            )}
                         </div>
 
                         {msgSucessoFoto && (
@@ -447,18 +509,30 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
                             <span className="label">Senha</span>
                             <button
                                 type="button"
-                                className="btn btn--square btn--ghost"
+                                className="btn btn--square btn--entrar"
                                 onClick={irEditarSenha}
                             >
                                 Ir para tela de troca de senha
                             </button>
                         </div>
+                        
+                        {msgSucesso && (
+                        <p className="login-form__success" role="status">
+                            {msgSucesso}
+                        </p>
+                        )}
+
                     </div>
 
+                    
+
                     <div className="card__footer editar-perfil-footer">
+
+
                         <button type="submit" className="btn btn--square btn--primary">
                             Salvar dados
                         </button>
+                        
                     </div>
                 </form>
             </div>
@@ -482,7 +556,7 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
                             className="btn btn--square btn--danger"
                             onClick={() => {
                                 const confirmou = window.confirm(
-                                    "Confirma a remoção da sua conta? Essa ação é permanente."
+                                    "Tem certeza que quer excluir sua conta? Essa ação é permanente."
                                 );
 
                                 if (confirmou) removerConta();

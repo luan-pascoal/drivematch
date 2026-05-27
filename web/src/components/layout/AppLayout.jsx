@@ -1,16 +1,17 @@
 import { Link } from 'react-router-dom';
-import { SiteNavLinks, SiteHeaderGuestActions } from './SiteHeader';
+import { SiteNavLinks } from './SiteHeader';
 
 export function AppLayout({
   children,
   title = 'MatchMarcha',
-  subtitle = 'Gestão de aulas de direção',
+  subtitle = '',
   headerNav = <SiteNavLinks />,
   headerRight,
   centerMain = false,
-  footerLeft = '© MatchMarcha',
+  footerLeft = '© MatchMarcha 2026',
   footerRight = 'Projeto Acadêmico',
 }) {
+  
   return (
     <div className="app-shell">
       <a className="skip-link" href="#main">

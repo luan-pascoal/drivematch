@@ -8,6 +8,9 @@ import axios from 'axios';
 import validator from 'validator';
 import './CadastroAluno.css';
 
+
+
+
 const ETAPAS = [
   { id: 1, titulo: 'Dados', campos: ['nome', 'email'] },
   { id: 2, titulo: 'Senha', campos: ['senha', 'confirmacaoSenha'] },
@@ -17,7 +20,12 @@ const ETAPAS = [
 
 const PADRAO_SENHA = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
+
+
+
+
 export function CadastroAluno({ carregarUsuario }) {
+
   const [arrayErrosBackend, setArrayErrosBackend] = useState([]);
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
@@ -26,22 +34,34 @@ export function CadastroAluno({ carregarUsuario }) {
 
   const navigate = useNavigate();
 
+
+
   const { register, setValue, handleSubmit, trigger, formState: { errors }, watch } = useForm();
   const watchSenha = watch('senha');
   const watchFoto = watch('foto');
 
+
   useEffect(() => {
+
     const arquivo = watchFoto?.[0];
+
     if (!arquivo) {
       setPreviewFoto(null);
       return;
     }
+
+
     const url = URL.createObjectURL(arquivo);
     setPreviewFoto(url);
+
     return () => URL.revokeObjectURL(url);
+
   }, [watchFoto]);
 
+
+
   const onSubmit = async (data) => {
+
     const formData = new FormData();
 
     formData.append('nome', data.nome);
@@ -53,7 +73,7 @@ export function CadastroAluno({ carregarUsuario }) {
     formData.append('foto', data.foto[0]);
     formData.append('termosUso', data.termosUso ? '1' : '');
 
-    const resposta = await axios.post('https://matchmarcha.infinityfree.me/api/usuarios', formData, {
+    const resposta = await axios.post('/api/usuarios', formData, {
       validateStatus: () => true,
       withCredentials: true,
     });
@@ -62,6 +82,7 @@ export function CadastroAluno({ carregarUsuario }) {
       setArrayErrosBackend([]);
       await carregarUsuario();
       navigate('/', { state: { msgSucesso: 'Conta criada com sucesso. Aproveite a plataforma!' } });
+
       return;
     }
 
@@ -81,41 +102,52 @@ export function CadastroAluno({ carregarUsuario }) {
     setValue('cpf', valorFormatado);
   };
 
+
+
   const etapaAnterior = () => {
     setEtapaAtual((n) => Math.max(1, n - 1));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+
   const proximaEtapa = async () => {
     const campos = ETAPAS[etapaAtual - 1].campos;
     const valido = await trigger(campos);
+
     if (valido) {
       setEtapaAtual((n) => Math.min(ETAPAS.length, n + 1));
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
 
+
   return (
     <AppLayout
-      headerNav={<SiteNavLinks />}
       headerRight={<SiteHeaderGuestActions />}
       footerRight="Cadastro de aluno"
     >
+
       <div className="cadastro-page">
+
         <div className="cadastro-card">
+
           <h1 className="cadastro-card__title">Criar conta</h1>
-          <p className="cadastro-card__subtitle">Cadastro de aluno — leva poucos minutos</p>
+          <p className="cadastro-card__subtitle">Cadastro de aluno</p>
 
           <p className="cadastro-card__login">
-            Já tem conta?{' '}
+            Já tem conta?
+            {' '}
             <Link to="/login">Entrar</Link>
           </p>
 
           <ol className="cadastro-steps" aria-label="Progresso do cadastro">
+
             {ETAPAS.map((etapa) => {
               const concluida = etapa.id < etapaAtual;
               const ativa = etapa.id === etapaAtual;
+
               return (
                 <li
                   key={etapa.id}
@@ -126,8 +158,10 @@ export function CadastroAluno({ carregarUsuario }) {
                   ].join(' ')}
                   aria-current={ativa ? 'step' : undefined}
                 >
+
                   <span className="cadastro-steps__dot">{etapa.id}</span>
                   <span className="cadastro-steps__label">{etapa.titulo}</span>
+                  
                 </li>
               );
             })}
@@ -137,7 +171,7 @@ export function CadastroAluno({ carregarUsuario }) {
             {etapaAtual === 1 && (
               <div className="cadastro-panel">
                 <h2 className="cadastro-panel__heading">Seus dados</h2>
-                <p className="cadastro-panel__text">Comece com nome e e-mail. São só dois campos.</p>
+                <p className="cadastro-panel__text">Seus próprios dados pessoais para identificação na plataforma.</p>
 
                 <div className="field">
                   <label className="label" htmlFor="cadastro-nome">Nome completo</label>
@@ -166,7 +200,7 @@ export function CadastroAluno({ carregarUsuario }) {
                     id="cadastro-email"
                     className="input input--square"
                     type="email"
-                    placeholder="Seu e-mail"
+                    placeholder="nome@email.com"
                     autoComplete="email"
                     {...register('email', {
                       required: true,
@@ -329,7 +363,7 @@ export function CadastroAluno({ carregarUsuario }) {
 
             {etapaAtual === 4 && (
               <div className="cadastro-panel">
-                <h2 className="cadastro-panel__heading">Quase lá</h2>
+                <h2 className="cadastro-panel__heading">Confirmar</h2>
                 <p className="cadastro-panel__text">Adicione uma foto e aceite os termos para finalizar.</p>
 
                 <div className="cadastro-upload">
@@ -384,7 +418,7 @@ export function CadastroAluno({ carregarUsuario }) {
                   <p className="cadastro-termos__text">
                     <label htmlFor="cadastro-termos">
                       Eu concordo com os{' '}
-                      <Link to="/termos" target="_blank" rel="noopener noreferrer">
+                      <Link to="/termos" target="_blank">
                         termos de uso do MatchMarcha
                       </Link>
                     </label>

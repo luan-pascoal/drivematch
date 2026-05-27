@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
   proxy: {
     '/api': {
-      target: 'https://matchmarcha.infinityfree.me/',
+      target: 'http://localhost/MatchMarcha/',
       changeOrigin: true,
     },
   }

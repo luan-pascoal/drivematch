@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { MsgErrosBackEnd } from '../../../components/MsgErrosBackEnd';
 import { AppLayout } from '../../../components/layout/AppLayout';
-import { SiteNavLinks } from '../../../components/layout/SiteHeader';
+import { SiteHeaderLoggedActions, SiteHeaderGuestActions } from '../../../components/layout/SiteHeader';
 import axios from 'axios';
-import './EditarSenha.css';
+import './EditarSenha.css'; 
 
-export function EditarSenha() {
+export function EditarSenha({ usuario, dadosUsuario, carregarUsuario, atualizarUsuario}) {
 
     const [arrayErrosBackend, setArrayErrosBackend] = useState([]);
     const [mostrarAtual, setMostrarAtual] = useState(false);
@@ -22,7 +22,7 @@ export function EditarSenha() {
 
     const onSubmit = async (data) => {
 
-        const resposta = await axios.put('https://matchmarcha.infinityfree.me/api/usuarios/senha', {
+        const resposta = await axios.put('/api/usuarios/senha', {
             senhaAtual: data.senhaAtual,
             novaSenha: data.novaSenha,
             confirmacaoSenha: data.confirmacao
@@ -55,13 +55,20 @@ export function EditarSenha() {
     }
 
     return (
-        <AppLayout headerNav={<SiteNavLinks />} footerRight="Trocar senha">
-            <Link className="page-back" to="/editar-perfil">
-                ← Voltar para editar perfil
-            </Link>
+        <AppLayout 
+        headerRight={
+            usuario?.logado ? <SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} /> : <SiteHeaderGuestActions />
+          }
+        footerRight="Trocar senha">
+            
 
             <div className="card editar-senha-card">
+            
                 <div className="card__header">
+                    <Link className="page-back" to="/editar-perfil">
+                        ← Voltar para editar perfil
+                    </Link>
+
                     <h1 className="card__title">Trocar senha</h1>
                     <p className="card__subtitle">
                         Para sua segurança, informe a senha atual e confirme a nova senha.
@@ -187,8 +194,8 @@ export function EditarSenha() {
                     </div>
 
                     <MsgErrosBackEnd arrayErrosBackend={arrayErrosBackend} />
-
-                    <div className="editar-senha-actions">
+                    
+                    <div className="card__footer editar-senha-actions">
                         <button type="submit" className="btn btn--square btn--primary">
                             Salvar alterações
                         </button>
@@ -201,6 +208,7 @@ export function EditarSenha() {
                         </button>
                     </div>
                 </form>
+                
             </div>
         </AppLayout>
     );

@@ -8,6 +8,10 @@ import { InstructorCard } from '../../components/instructors/InstructorCard';
 import { instrutoresMock } from '../../data/instrutoresMock';
 import './HomePage.css';
 
+
+
+// FIGURANTES E OPÇÕES PADRÕES
+
 const OPCOES_LOCAL = [
   { valor: '', rotulo: 'Todos os locais' },
   { valor: 'sao paulo', rotulo: 'São Paulo' },
@@ -22,7 +26,6 @@ const OPCOES_CATEGORIA = [
   { valor: '', rotulo: 'Todas as categorias' },
   { valor: 'a', rotulo: 'Categoria A (moto)' },
   { valor: 'b', rotulo: 'Categoria B (carro)' },
-  { valor: 'ab', rotulo: 'Categoria AB' },
 ];
 
 const OPCOES_PRECO = [
@@ -31,6 +34,11 @@ const OPCOES_PRECO = [
   { valor: '90', rotulo: 'Até R$ 90/hora' },
   { valor: '100', rotulo: 'Até R$ 100/hora' },
 ];
+
+
+
+
+
 
 function normalizarTexto(texto) {
   return texto
@@ -59,7 +67,6 @@ function filtrarInstrutores(lista, { busca, local, categoria, precoMax }) {
 
     if (categoria === 'a' && !categoriasNorm.includes('cat. a')) return false;
     if (categoria === 'b' && !categoriasNorm.includes('cat. b')) return false;
-    if (categoria === 'ab' && !categoriasNorm.includes('ab')) return false;
 
     if (precoMax && item.valorHora > Number(precoMax)) return false;
 
@@ -67,21 +74,8 @@ function filtrarInstrutores(lista, { busca, local, categoria, precoMax }) {
   });
 }
 
-function BotoesLogado({ nome, onLogout }) {
-  return (
-  <>
-      <span className="home-header-user__name" title={nome}>
-        Olá, {nome}
-      </span>
-      <Link className="btn btn--square btn--entrar" to="/editar-perfil">
-        Meu perfil
-      </Link>
-      <button type="button" className="btn btn--square btn--ghost" onClick={onLogout}>
-        Sair
-      </button>
-    </>
-  );
-}
+
+
 
 export function HomePage({ usuario, dadosUsuario, carregarUsuario }) {
   const [alertaSucesso, setAlertaSucesso] = useState('');
@@ -91,17 +85,24 @@ export function HomePage({ usuario, dadosUsuario, carregarUsuario }) {
   const [filtroPreco, setFiltroPreco] = useState('');
   const [filtrosAbertos, setFiltrosAbertos] = useState(true);
 
+
   const navigate = useNavigate();
   const location = useLocation();
 
+
+
   const logado = Boolean(usuario?.logado);
   const carregando = usuario === undefined;
+
+
 
   useEffect(() => {
     if (location.state?.msgSucesso) {
       setAlertaSucesso(location.state.msgSucesso);
     }
   }, [location.state?.msgSucesso]);
+
+
 
   const instrutoresFiltrados = useMemo(
     () =>
@@ -114,11 +115,8 @@ export function HomePage({ usuario, dadosUsuario, carregarUsuario }) {
     [busca, filtroLocal, filtroCategoria, filtroPreco]
   );
 
-  const fazerLogout = async () => {
-    await axios.delete('https://matchmarcha.infinityfree.me/api/logout');
-    await carregarUsuario();
-    navigate('/');
-  };
+
+
 
   const limparFiltros = () => {
     setBusca('');
@@ -127,19 +125,26 @@ export function HomePage({ usuario, dadosUsuario, carregarUsuario }) {
     setFiltroPreco('');
   };
 
+
+
   const temFiltroAtivo = busca || filtroLocal || filtroCategoria || filtroPreco;
+
+
 
   return (
     <AppLayout
       headerRight={
-        dadosUsuario ? <SiteHeaderLoggedActions usuario={dadosUsuario} /> : <SiteHeaderGuestActions />
+        usuario?.logado ? <SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} /> : <SiteHeaderGuestActions />
       }
-      footerRight="Encontre o instrutor ideal para sua CNH"
+      footerRight="Página Inicial"
     >
+
       <div className="stack stack--lg">
         {alertaSucesso && (
           <AlertaSucesso mensagem={alertaSucesso} onClose={() => setAlertaSucesso('')} />
         )}
+
+
 
         <section className="home-hero" aria-labelledby="home-titulo">
           <h1 id="home-titulo" className="home-hero__title">
@@ -151,8 +156,14 @@ export function HomePage({ usuario, dadosUsuario, carregarUsuario }) {
           </p>
         </section>
 
+
+
+
+
         <section className="home-search" aria-label="Buscar instrutores">
           <div className="home-search__row">
+
+
             <div className="home-search__main">
               <div className="home-search__field">
                 <label className="label" htmlFor="busca-instrutor">
@@ -168,6 +179,7 @@ export function HomePage({ usuario, dadosUsuario, carregarUsuario }) {
                 />
               </div>
 
+
               <button
                 type="button"
                 className="btn btn--square btn--ghost home-search__toggle"
@@ -178,6 +190,10 @@ export function HomePage({ usuario, dadosUsuario, carregarUsuario }) {
                 {filtrosAbertos ? 'Ocultar filtros' : 'Mostrar filtros'}
               </button>
             </div>
+
+
+
+
 
             {filtrosAbertos && (
               <div id="painel-filtros" className="home-search__filters">

@@ -20,7 +20,7 @@ export function Login({ carregarUsuario }) {
 
 
   const onSubmit = async (data) => {
-    const resposta = await axios.post('https://matchmarcha.infinityfree.me/api/login', data, {
+    const resposta = await axios.post('/api/login', data, {
       validateStatus: () => true,
     });
 
