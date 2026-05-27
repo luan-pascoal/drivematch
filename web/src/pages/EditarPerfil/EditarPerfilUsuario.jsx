@@ -237,7 +237,7 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
     };
 
     const srcFoto = dadosUsuario?.foto
-        ? `http://localhost/MatchMarcha/uploads/${dadosUsuario.foto}`
+        ? `https://matchmarcha.infinityfree.me/uploads/${dadosUsuario.foto}`
         : null;
 
     const removerConta = async () => {

@@ -93,7 +93,7 @@ export function SiteHeaderLoggedActions({ usuario }) {
         <img 
           className="user-menu__avatar" 
           src={ usuario?.foto
-          ? `http://localhost/MatchMarcha/uploads/${usuario.foto}`
+          ? `https://matchmarcha.infinityfree.me/uploads/${usuario.foto}`
           : `https://ui-avatars.com/api/?name=${primeiroNome}&background=0A4BAA&color=FFFFFF`} 
           alt={`Foto de ${primeiroNome}`} 
         />
