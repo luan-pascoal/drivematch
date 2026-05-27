@@ -22,7 +22,7 @@ export function EditarSenha() {
 
     const onSubmit = async (data) => {
 
-        const resposta = await axios.put('/api/usuarios/senha', {
+        const resposta = await axios.put('https://matchmarcha.infinityfree.me/api/usuarios/senha', {
             senhaAtual: data.senhaAtual,
             novaSenha: data.novaSenha,
             confirmacaoSenha: data.confirmacao

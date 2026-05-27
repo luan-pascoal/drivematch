@@ -61,7 +61,7 @@ export function SiteHeaderLoggedActions({ usuario }) {
   // 2. A função de logout agora fica AQUI DENTRO, onde ela tem acesso ao 'navigate'
   const fazerLogout = async () => {
     try {
-      const resposta = await axios.delete('/api/logout');
+      const resposta = await axios.delete('https://matchmarcha.infinityfree.me/api/logout');
       
       if (resposta.status === 200 && resposta.data.sucesso === true) {
         // Redireciona para a home

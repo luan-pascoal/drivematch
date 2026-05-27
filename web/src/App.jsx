@@ -28,7 +28,7 @@ function App() {
   // Verifica a sessão ativa (/api/eu), atualiza o state usuario e já carrega o perfil completo via buscarDadosUsuario()
   const carregarUsuario = async () => {
     try {
-      const response = await axios.get('/api/eu', { withCredentials: true });
+      const response = await axios.get('https://matchmarcha.infinityfree.me/api/eu', { withCredentials: true });
       const dadosLogin = response.data;
       setUsuario(dadosLogin);
       if (dadosLogin?.logado && dadosLogin?.usuario?.id) {

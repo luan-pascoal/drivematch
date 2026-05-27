@@ -103,7 +103,7 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
 
         }
 
-        const resposta = await axios.put('/api/usuarios/', {
+        const resposta = await axios.put('https://matchmarcha.infinityfree.me/api/usuarios/', {
             nome: data.nome,
             email: data.email,
             genero: data.genero
@@ -242,7 +242,7 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
 
     const removerConta = async () => {
 
-        const resposta = await axios.delete('/api/usuarios', {
+        const resposta = await axios.delete('https://matchmarcha.infinityfree.me/api/usuarios', {
             validateStatus: () => true,
             withCredentials: true
         })

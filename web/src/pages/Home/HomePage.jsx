@@ -115,7 +115,7 @@ export function HomePage({ usuario, dadosUsuario, carregarUsuario }) {
   );
 
   const fazerLogout = async () => {
-    await axios.delete('/api/logout');
+    await axios.delete('https://matchmarcha.infinityfree.me/api/logout');
     await carregarUsuario();
     navigate('/');
   };

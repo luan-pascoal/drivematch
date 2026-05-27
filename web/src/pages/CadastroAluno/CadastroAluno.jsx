@@ -53,7 +53,7 @@ export function CadastroAluno({ carregarUsuario }) {
     formData.append('foto', data.foto[0]);
     formData.append('termosUso', data.termosUso ? '1' : '');
 
-    const resposta = await axios.post('/api/usuarios', formData, {
+    const resposta = await axios.post('https://matchmarcha.infinityfree.me/api/usuarios', formData, {
       validateStatus: () => true,
       withCredentials: true,
     });
