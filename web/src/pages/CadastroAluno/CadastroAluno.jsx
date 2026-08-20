@@ -8,9 +8,6 @@ import axios from 'axios';
 import validator from 'validator';
 import './CadastroAluno.css';
 
-
-
-
 const ETAPAS = [
   { id: 1, titulo: 'Dados', campos: ['nome', 'email'] },
   { id: 2, titulo: 'Senha', campos: ['senha', 'confirmacaoSenha'] },
@@ -20,26 +17,24 @@ const ETAPAS = [
 
 const PADRAO_SENHA = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-
-
-
-
 export function CadastroAluno({ carregarUsuario }) {
 
   const [arrayErrosBackend, setArrayErrosBackend] = useState([]);
+
   const [mostrarSenha, setMostrarSenha] = useState(false);
+
   const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
+
   const [etapaAtual, setEtapaAtual] = useState(1);
+
   const [previewFoto, setPreviewFoto] = useState(null);
 
   const navigate = useNavigate();
 
-
-
   const { register, setValue, handleSubmit, trigger, formState: { errors }, watch } = useForm();
+
   const watchSenha = watch('senha');
   const watchFoto = watch('foto');
-
 
   useEffect(() => {
 
@@ -50,15 +45,12 @@ export function CadastroAluno({ carregarUsuario }) {
       return;
     }
 
-
     const url = URL.createObjectURL(arquivo);
     setPreviewFoto(url);
 
     return () => URL.revokeObjectURL(url);
 
   }, [watchFoto]);
-
-
 
   const onSubmit = async (data) => {
 
@@ -75,21 +67,22 @@ export function CadastroAluno({ carregarUsuario }) {
 
     const resposta = await axios.post('/api/usuarios', formData, {
       validateStatus: () => true,
-      withCredentials: true,
+      withCredentials: true
     });
 
     if (resposta.status === 200 && resposta.data.sucesso === true) {
       setArrayErrosBackend([]);
       await carregarUsuario();
       navigate('/', { state: { msgSucesso: 'Conta criada com sucesso. Aproveite a plataforma!' } });
-
       return;
     }
 
     if (resposta.status === 422) {
       const errosBackend = resposta.data.Erro;
       setArrayErrosBackend(Object.entries(errosBackend));
+      return;
     }
+
   };
 
   const formatarCpf = (event) => {
@@ -102,26 +95,19 @@ export function CadastroAluno({ carregarUsuario }) {
     setValue('cpf', valorFormatado);
   };
 
-
-
   const etapaAnterior = () => {
     setEtapaAtual((n) => Math.max(1, n - 1));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-
   const proximaEtapa = async () => {
     const campos = ETAPAS[etapaAtual - 1].campos;
     const valido = await trigger(campos);
-
     if (valido) {
       setEtapaAtual((n) => Math.min(ETAPAS.length, n + 1));
-
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
-
-
 
   return (
     <AppLayout
@@ -161,7 +147,7 @@ export function CadastroAluno({ carregarUsuario }) {
 
                   <span className="cadastro-steps__dot">{etapa.id}</span>
                   <span className="cadastro-steps__label">{etapa.titulo}</span>
-                  
+
                 </li>
               );
             })}
@@ -246,7 +232,7 @@ export function CadastroAluno({ carregarUsuario }) {
                       aria-label={mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'}
                     >
                       <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill="currentColor" d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-2.2a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Z"/>
+                        <path fill="currentColor" d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-2.2a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Z" />
                       </svg>
                     </button>
                   </div>
@@ -286,7 +272,7 @@ export function CadastroAluno({ carregarUsuario }) {
                       aria-label={mostrarConfirmacao ? 'Ocultar confirmação' : 'Mostrar confirmação'}
                     >
                       <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill="currentColor" d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-2.2a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Z"/>
+                        <path fill="currentColor" d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-2.2a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Z" />
                       </svg>
                     </button>
                   </div>

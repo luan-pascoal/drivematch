@@ -32,7 +32,7 @@ export function SiteHeaderGuestActions() {
 }
 
 /** Botões e Dropdown do canto superior direito para Usuários Logados (Alunos) */
-export function SiteHeaderLoggedActions({ usuario, carregarUsuario }) {
+export function SiteHeaderLoggedActions({ usuario, tipoUsuario, carregarUsuario }) {
   
   const navigate = useNavigate();
   
@@ -47,7 +47,6 @@ export function SiteHeaderLoggedActions({ usuario, carregarUsuario }) {
     setMenuAberto(!menuAberto);
   };
 
-
   // Efeito para fechar o dropdown se o usuário clicar fora dele
   useEffect(() => {
     function fecharAoClicarFora(event) {
@@ -59,22 +58,14 @@ export function SiteHeaderLoggedActions({ usuario, carregarUsuario }) {
     return () => document.removeEventListener("mousedown", fecharAoClicarFora);
   }, []);
 
-
-
-
-
   const fazerLogout = async () => {
     try {
       const resposta = await axios.delete('/api/logout');
       
       if (resposta.status === 200 && resposta.data.sucesso === true) {
-        
-
         await carregarUsuario();
         // redireciona
         navigate('/');
-
-        
       } else {
         console.error('Erro ao fazer logout:', resposta.data.mensagem);
       }
@@ -83,12 +74,10 @@ export function SiteHeaderLoggedActions({ usuario, carregarUsuario }) {
     }
   };
 
-
-
   // Pega apenas o primeiro nome do usuário
   const primeiroNome = usuario?.nome?.split(' ')[0] || 'Usuário';
 
-
+  const isInstrutor = tipoUsuario === "instrutor";
 
   return (
     <div className="user-menu" ref={menuRef}>
@@ -118,14 +107,29 @@ export function SiteHeaderLoggedActions({ usuario, carregarUsuario }) {
         <div className="user-menu__dropdown">
           
           <div className="dropdown__secao dropdown__secao--tipo">
-            <span className="dropdown__badge">Aluno</span>
+            <span className="dropdown__badge">{isInstrutor ? 'Instrutor' : 'Aluno'}</span>
           </div>
 
-          <nav className="dropdown__secao dropdown__secao--links" aria-label="Menu do aluno">
-            <Link to="/mensagens" onClick={() => setMenuAberto(false)}>Mensagens</Link>
-            <Link to="/minhas-aulas" onClick={() => setMenuAberto(false)}>Minhas Aulas</Link>
-            <Link to="/editar-perfil" onClick={() => setMenuAberto(false)}>Editar Perfil</Link>
-            <Link to="/ajuda" onClick={() => setMenuAberto(false)}>Ajuda</Link>
+          <nav className="dropdown__secao dropdown__secao--links" aria-label="Menu do usuario">
+            {isInstrutor ? (
+              <>
+                <Link to="/mensagens" onClick={() => setMenuAberto(false)}>Mensagens</Link>
+                <Link to="/minhas-aulas" onClick={() => setMenuAberto(false)}>Minhas Aulas</Link>
+                <Link to="/editar-perfil" onClick={() => setMenuAberto(false)}>Editar Perfil</Link>
+                <Link to="/veiculos" onClick={() => setMenuAberto(false)}>Meus Veiculos</Link>
+                <Link to="/minhas-solicitacoes" onClick={() => setMenuAberto(false)}>Minhas Solicitações</Link>
+                <Link to="/ajuda" onClick={() => setMenuAberto(false)}>Ajuda</Link>
+              </>
+            ) : (
+              <>
+                <Link to="/mensagens" onClick={() => setMenuAberto(false)}>Mensagens</Link>
+                <Link to="/minhas-aulas" onClick={() => setMenuAberto(false)}>Minhas Aulas</Link>
+                <Link to="/editar-perfil" onClick={() => setMenuAberto(false)}>Editar Perfil</Link>
+                <Link to="/ajuda" onClick={() => setMenuAberto(false)}>Ajuda</Link>
+              </>
+            )
+            }
+
           </nav>
 
           <div className="dropdown__secao dropdown__secao--sair">

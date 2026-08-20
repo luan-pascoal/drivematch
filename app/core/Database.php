@@ -174,6 +174,15 @@ class DataBase{
         return self::$instance;
     }
 
+    public function raw($sql, $values = array()){
+
+        $this -> querry_type = "select";
+
+        $this -> querry = $sql;
+
+        return $this -> run ($values);
+    }
+
 }
 
 ?>

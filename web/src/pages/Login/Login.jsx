@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MsgErrosBackEnd } from '../../components/MsgErrosBackEnd';
 import { AppLayout } from '../../components/layout/AppLayout';
@@ -16,8 +16,6 @@ export function Login({ carregarUsuario }) {
   const [msgSucesso, setMsgSucesso] = useState('');
   const [arrayErrosBackend, setArrayErrosBackend] = useState([]);
   const [mostrarSenha, setMostrarSenha] = useState(false);
-
-
 
   const onSubmit = async (data) => {
     const resposta = await axios.post('/api/login', data, {
@@ -57,7 +55,7 @@ export function Login({ carregarUsuario }) {
             <Link className="btn btn--square btn--entrar login-card__register-btn" to="/cadastro-aluno">
               Cadastrar como aluno
             </Link>
-            <Link className="btn btn--square btn--secondary login-card__register-btn" to="/cadastro-instrutor">
+            <Link className="btn btn--square btn--entrar login-card__register-btn" to="/cadastro-instrutor">
               Cadastrar como instrutor
             </Link>
           </div>
@@ -112,7 +110,7 @@ export function Login({ carregarUsuario }) {
                   aria-label={mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'}
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                    <path fill="currentColor" d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-2.2a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Z"/>
+                    <path fill="currentColor" d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-2.2a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Z" />
                   </svg>
                 </button>
               </div>

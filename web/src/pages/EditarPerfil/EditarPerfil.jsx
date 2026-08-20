@@ -1,7 +1,7 @@
 import { EditarPerfilUsuario } from "./EditarPerfilUsuario";
 import { EditarPerfilInstrutor } from "./EditarPerfilInstrutor";
 
-export function EditarPerfil( {usuario, dadosUsuario , msgErro, atualizarUsuario, carregarUsuario} ){
+export function EditarPerfil( {usuario, dadosUsuario , msgErro, atualizarUsuario, carregarUsuario, cidades} ){
     
     if (!usuario){
         return null;
@@ -13,11 +13,11 @@ export function EditarPerfil( {usuario, dadosUsuario , msgErro, atualizarUsuario
 
         return(
             <EditarPerfilUsuario
-                usuario={usuario}
                 dadosUsuario={dadosUsuario} 
                 msgErro={msgErro} 
                 atualizarUsuario={atualizarUsuario}
                 carregarUsuario={carregarUsuario}
+                usuario={usuario}
             />
         );
 
@@ -31,6 +31,8 @@ export function EditarPerfil( {usuario, dadosUsuario , msgErro, atualizarUsuario
                 msgErro={msgErro}
                 atualizarUsuario={atualizarUsuario} 
                 carregarUsuario={carregarUsuario}
+                cidades={cidades}
+                usuario={usuario}
             />
         );
 

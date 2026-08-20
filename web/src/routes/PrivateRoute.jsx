@@ -32,10 +32,8 @@ export function PrivateRoute( {children, tipo, usuario} ) {
         return <Navigate to="/login" />;
         // + msg de acesso negado
     }
-    
-    
 
-    if (tipo === "logado" && (usuario.tipo === "usuario" || usuario === "instrutor") ){
+    if (tipo === "logado" && (usuario.tipo === "usuario" || usuario .tipo === "instrutor") ){
         return children;
     }
 

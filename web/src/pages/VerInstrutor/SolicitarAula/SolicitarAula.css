@@ -1,0 +1,161 @@
+/* ─── Popup: Solicitar Aula ──────────────────────────────────────────────── */
+
+/* Texto introdutório, explica o que acontece após o envio */
+.solicitacao-intro {
+    margin: 0 0 var(--space-5);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--color-gray-200);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+}
+
+/* ─── Estrutura do form ───────────────────────────────────────────────────── */
+
+.form-solicitacao {
+    display: grid;
+    gap: var(--space-5);
+}
+
+/* Reaproveita .field/.label do components.css, só ajusta o que for específico */
+.form-solicitacao .field {
+    margin-top: 0;
+}
+
+/* ─── Select de categoria ─────────────────────────────────────────────────── */
+
+.form-solicitacao__select {
+    width: 100%;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 0.9rem;
+    background: var(--color-white);
+    color: var(--text);
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+        linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+    background-position: calc(100% - 1.2rem) center, calc(100% - 0.85rem) center;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.form-solicitacao__select:focus {
+    outline: none;
+    border-color: rgba(10, 75, 170, 0.5);
+    box-shadow: var(--focus-ring);
+}
+
+.form-solicitacao__select--invalido {
+    border-color: rgba(227, 0, 15, 0.4);
+}
+
+/* ─── Período (pills de checkbox) ─────────────────────────────────────────── */
+
+.periodo-opcoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.periodo-opcao {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-gray-200);
+    background: var(--color-white);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    user-select: none;
+    transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.periodo-opcao:hover {
+    border-color: rgba(10, 75, 170, 0.3);
+}
+
+.periodo-opcao:has(input:focus-visible) {
+    box-shadow: var(--focus-ring);
+}
+
+.periodo-opcao:has(input:checked) {
+    background: var(--color-primary-light);
+    border-color: rgba(10, 75, 170, 0.35);
+    color: var(--color-primary-dark);
+}
+
+.periodo-opcao__input {
+    /* Some visualmente mas continua acessível/focável */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ─── Autocomplete de cidade ──────────────────────────────────────────────── */
+
+.autocomplete {
+    position: relative;
+}
+
+.cidade-autocomplete__list {
+    position: absolute;
+    top: calc(100% + 0.35rem);
+    left: 0;
+    right: 0;
+    z-index: 10;
+    max-height: 220px;
+    overflow-y: auto;
+    margin: 0;
+    padding: var(--space-2) 0;
+    list-style: none;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+}
+
+.cidade-autocomplete__item {
+    padding: 0.6rem var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--text);
+    cursor: pointer;
+    transition: background 100ms ease;
+}
+
+.cidade-autocomplete__item:hover,
+.cidade-autocomplete__item:focus-visible {
+    background: var(--color-primary-light);
+    color: var(--color-primary-dark);
+}
+
+/* ─── Rodapé do popup (ações) ─────────────────────────────────────────────── */
+
+.solicitar-aula__rodape {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-gray-200);
+}
+
+@media (max-width: 480px) {
+    .solicitar-aula__rodape {
+        flex-direction: column-reverse;
+    }
+
+    .solicitar-aula__rodape .btn {
+        width: 100%;
+    }
+}

@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { MsgErrosBackEnd } from '../../components/MsgErrosBackEnd';
-import { AlertaSucesso } from '../../components/AlertaSucesso';
+import { AlertaSucesso } from '../../components/alertas/AlertaSucesso';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { SiteHeaderLoggedActions, SiteNavLinks } from '../../components/layout/SiteHeader';
 import axios from 'axios';
@@ -10,16 +10,14 @@ import validator from 'validator';
 import './EditarPerfilUsuario.css';
 
 
-export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarUsuario, carregarUsuario }) {
+export function EditarPerfilUsuario({ dadosUsuario, usuario, msgErro, atualizarUsuario, carregarUsuario }) {
 
     // reset => função do React Hook Form que preenche o formulário com valores definidos
     // isDirty => boolean do React Hook Form que indica se o usuário alterou algum campo
-    const { register, handleSubmit, reset, unregister, setValue, watch, formState: { errors, isDirty } } = useForm();
-
+    const { register, handleSubmit, reset, setValue, watch, formState: { errors, isDirty } } = useForm();
     // State que controla o texto do alerta de sucesso
     const [alertaSucesso, setAlertaSucesso] = useState("");
-
-    //array com erros que vierem do back
+    // Array com erros que vierem do backend
     const [arrayErrosBackend, setArrayErrosBackend] = useState([]);
 
     const [confirmarRemocao, setConfirmarRemocao] = useState(false);
@@ -27,56 +25,41 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
     const [msgErroFoto, setMsgErroFoto] = useState("");
     const [fotoSelecionada, setFotoSelecionada] = useState(null);
     const [carregandoFoto, setCarregandoFoto] = useState(false);
-
     const [previewFoto, setPreviewFoto] = useState(null);
-
     const [msgSucesso, setMsgSucesso] = useState('');
 
+    // Ref que controla o valor do campo foto - Onde o usuario coloca uma nova foto
     const inputFotoRef = useRef(null);
-    
 
     const navigate = useNavigate();
-
     const location = useLocation();
 
-    
     useEffect(() => {
-
         // Se a location tiver um state.msgSucesso
         if (location.state?.msgSucesso) {
-
             // Preenche o state alertaSucesso com essa mensagem
             setAlertaSucesso(location.state.msgSucesso);
-
         }
-    }, [])
+    }, []);
 
     const watchFoto = watch('foto');
 
     useEffect(() => {
 
         const arquivo = watchFoto?.[0];
-    
         if (!arquivo) {
           setPreviewFoto(null);
           return;
         }
-    
         const url = URL.createObjectURL(arquivo);
-    
         setPreviewFoto(url);
-    
         return () => URL.revokeObjectURL(url);
     
     }, [watchFoto]);
 
-
-
-
     useEffect(() => {
 
         if (!dadosUsuario) return;
-
         reset({
             nome: dadosUsuario.nome,
             email: dadosUsuario.email,
@@ -88,31 +71,31 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
 
     useEffect(() => {
         const beforeUnload = (event) => {
+            // Se tiver mudanças não salvas ou foto selecionada
             if (isDirty || fotoSelecionada) {
-                event.preventDefault();
-                event.returnValue = '';
+                event.preventDefault(); // Faz o navegador mostrar aquele popup nativo: "Tem certeza que quer sair? 
+                event.returnValue = ''; // É necessário por compatibilidade com versões antigas de alguns browsers.
             }
         };
 
+        // beforeunload é um evento nativo do navegador que dispara quando o usuário tenta fechar a aba, 
+        // recarregar a página ou navegar pra fora pelo histórico do browser
         window.addEventListener('beforeunload', beforeUnload);
 
         return () => {
+            // Limpeza
             window.removeEventListener('beforeunload', beforeUnload);
         };
     }, [isDirty, fotoSelecionada]);
 
-   
-
     const salvar = async (data) => {
 
         if (!isDirty) {
-
             setMsgSucesso('Todos os dados estão salvos!')
             setTimeout(() => {
                 setMsgSucesso('');
               }, 5000);
             return;
-
         }
 
         const resposta = await axios.put('/api/usuarios/', {
@@ -182,13 +165,10 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
 
         setMsgErroFoto("");
         setMsgSucessoFoto("");
-        setFotoSelecionada(img);
-
-        
+        setFotoSelecionada(img);  
     };
 
     const salvarFoto = async (data) => {
-        // event.preventDefault();
 
         if (!data.foto || !data.foto[0]) {
             setMsgErroFoto("Selecione uma nova foto para continuar.");
@@ -200,12 +180,8 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
         setMsgErroFoto("");
         setMsgSucessoFoto("");
 
-        
-
         const formData = new FormData();
         formData.append("foto", data.foto[0]);
-        
-
         const resposta = await axios.post("/api/usuarios/foto", formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
@@ -219,10 +195,10 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
             setArrayErrosBackend([]);
             setFotoSelecionada(null);
             setPreviewFoto(null);
-
-            setValue('foto', null);
+            setValue('foto', null); 
 
             if (inputFotoRef.current) {
+                // Limpa o input apos salvar a foto
                 inputFotoRef.current.value = "";
             }
             
@@ -243,16 +219,20 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
         setCarregandoFoto(false);
     };
 
+    // Essa função é chamada quando o usuario vai para a tela de edição de senha
     const confirmarSaida = (acao) => {
+        // Se n tiver nada modificado e nenhuma foto selecionada ele só executa a ação
         if (!isDirty && !fotoSelecionada) {
             acao();
             return;
         }
 
+        // Se tiver alterações, abre o window.confirm
         const confirmou = window.confirm(
             "Você fez alterações nesta tela. Deseja sair mesmo assim?"
         );
 
+        // So executa ação se o usuario confirmar o window.confirm
         if (confirmou) {
             acao();
         }
@@ -274,21 +254,15 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
         })
 
         if (resposta.status === 200 && resposta.data.sucesso === true) {
-
             setArrayErrosBackend([]);
-
             await carregarUsuario();
-
             navigate("/", { state: { msgSucesso: "Conta excluída com sucesso!" } });
-
         }
 
         if (resposta.status === 422) {
-
             const errosBackend = resposta.data.Erro;
             const array = Object.entries(errosBackend);
             setArrayErrosBackend(array);
-
         }
     }
 
@@ -300,7 +274,7 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
 
     return (
         <AppLayout
-            headerRight={<SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} /> || <SiteHeaderGuestActions />}
+            headerRight={<SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} tipoUsuario={usuario.usuario.tipo} /> || <SiteHeaderGuestActions />}
             footerRight="Edição de perfil"
         >
             {/* Se alertaSucesso tiver texto, renderiza o AlertaSucesso
@@ -363,9 +337,7 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
                         <div className="field">
                            
                             <label htmlFor="nova-foto" className="label foto-upload__area">
-                            
-                            
-                                
+                        
                                 <p className="foto-upload__text">Escolher foto de perfil
                                 </p>
                                 <p className="foto-upload__hint">PNG, JPEG ou WebP · máximo 2 MB</p>
@@ -378,12 +350,8 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
                                 onChange={selecionarFoto}
                                 accept="image/png,image/jpeg,image/webp"
                                 {...register('foto', {
-                                // required: true,
                                 validate: (files) => {
-                                    
                                     const file = files?.[0];
-                                    
-                                    
                                     if (!file) return true;
                                     if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
                                     return 'Tipo de arquivo inválido';
@@ -524,10 +492,7 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
 
                     </div>
 
-                    
-
                     <div className="card__footer editar-perfil-footer">
-
 
                         <button type="submit" className="btn btn--square btn--primary">
                             Salvar dados
@@ -538,16 +503,23 @@ export function EditarPerfilUsuario({ usuario, dadosUsuario, msgErro, atualizarU
             </div>
 
             {!confirmarRemocao ? (
-                <button
-                    className="btn btn--square btn--danger"
-                    type="button"
-                    onClick={() => { setConfirmarRemocao(true) }}>
-                    Remover Conta
-                </button>
+                <div className="zona-perigo">
+                    <p className="zona-perigo__aviso">
+                        Atenção: ao remover sua conta todos os seus dados serão excluídos permanentemente.
+                    </p>
+                    <div className="zona-perigo__acoes">
+                        <button
+                            className="btn btn--square btn--danger"
+                            type="button"
+                            onClick={() => { setConfirmarRemocao(true) }}>
+                            Remover Conta
+                        </button>
+                    </div>
+                </div>
             ) : (
-                <div className="alert alert--warning stack">
-                    <p>Deseja excluir sua conta? Essa ação não pode ser desfeita.</p>
-                    <div className="row">
+                <div className="zona-perigo">
+                    <p className="zona-perigo__aviso">Deseja excluir sua conta? Essa ação não pode ser desfeita.</p>
+                    <div className="zona-perigo__acoes">
                         <button type="button" className="btn btn--square btn--ghost" onClick={() => setConfirmarRemocao(false)}>
                             Cancelar
                         </button>

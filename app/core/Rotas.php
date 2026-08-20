@@ -11,7 +11,15 @@ class Rotas {
         "InstrutorController",
         "LoginController",
         "EuController",
-        "LogoutController"
+        "LogoutController",
+        "CidadeController",
+        "CorController",
+        "FipeController",
+        "VeiculoController",
+        "NovaSenhaController",
+        "EsqueciSenhaController",
+        "SolicitacaoController",
+        "PusherController"
     ]; 
 
     public function adicionar($metodo, $rota, $chamada, $restricaoTipo)
@@ -126,7 +134,7 @@ class Rotas {
                         $indice = $i;
 
                         // Pega primeiro parâmetro (ex: id)
-                        $param = $params[0] ?? null;
+                        $param = !empty($params) ? $params : null;
 
                         // sai do foreach
                         break;
@@ -170,10 +178,16 @@ class Rotas {
         $args = [];
 
         if ($param !== null) {
-            $args[] = $param;
+            if (is_array($param)) {
+                foreach ($param as $p) {
+                    $args[] = $p;
+                }
+                } else {
+                    $args[] = $param;
+                }
         }
 
-        if ($body !== null) {
+        if (!empty($body)) {
             $args[] = $body;
         }
 

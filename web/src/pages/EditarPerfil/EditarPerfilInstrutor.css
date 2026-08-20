@@ -1,0 +1,353 @@
+/* ── Página ── */
+.editar-instrutor-page {
+  width: 100%;
+  max-width: 72rem; /* mais largo por causa do layout de duas colunas */
+  margin-inline: auto;
+  padding-block: var(--space-4) var(--space-10);
+}
+
+/* ── Cabeçalho da página ── */
+.editar-instrutor-page__header {
+  margin-bottom: var(--space-6);
+}
+
+.editar-instrutor-page__title {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-gray-700);
+}
+
+.editar-instrutor-page__subtitle {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  font-family: var(--font-serif);
+}
+
+/* ── Grid principal: coluna esquerda (foto + aula) | coluna direita (perfil) ── */
+.editar-instrutor-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "foto  perfil"
+    "aula  perfil";
+  gap: var(--space-6);
+  align-items: start;
+}
+
+/* ── Cards de formulário ── */
+.editar-instrutor-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.editar-instrutor-card--foto  { grid-area: foto; }
+.editar-instrutor-card--perfil { grid-area: perfil; }
+.editar-instrutor-card--aula  { grid-area: aula; }
+
+/* ── Cabeçalho de cada card ── */
+.editar-instrutor-card__header {
+  margin-bottom: var(--space-5);
+}
+
+.editar-instrutor-card__title {
+  margin: 0 0 var(--space-1);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-gray-700);
+}
+
+.editar-instrutor-card__description {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* ── Corpo dos cards (campos) ── */
+.editar-instrutor-card__body {
+  display: grid;
+  gap: var(--space-5);
+}
+
+/* ── Rodapé dos cards (botões) ── */
+.editar-instrutor-card__footer {
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-gray-200);
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ============================================================
+   Seção de FOTO — idêntico ao EditarPerfilUsuario
+   ============================================================ */
+
+.editar-instrutor-foto {
+  border-radius: 999px;
+  border: 2px solid var(--color-primary-light);
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+}
+
+.foto__body {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.foto-upload__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.foto-upload__area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border: 2px dashed var(--color-gray-200);
+  border-radius: var(--radius-md);
+  background: var(--color-gray-100);
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+
+.foto-upload__area:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.foto-upload__text {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-gray-700);
+  text-align: center;
+}
+
+.foto-upload__hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ============================================================
+   Campo de CIDADE (autocomplete)
+   ============================================================ */
+
+.cidade-autocomplete {
+  position: relative;
+}
+
+.cidade-autocomplete__suggestions {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  list-style: none;
+  margin: 0;
+  padding: var(--space-1) 0;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  max-height: 14rem;
+  overflow-y: auto;
+}
+
+.cidade-autocomplete__item {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 100ms ease;
+}
+
+.cidade-autocomplete__item:hover,
+.cidade-autocomplete__item:focus {
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  outline: none;
+}
+
+/* ============================================================
+   Campo de PERÍODO (checkboxes)
+   ============================================================ */
+
+.periodo-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.periodo-option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-gray-100);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-gray-700);
+  user-select: none;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.periodo-option:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+.periodo-option__checkbox {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+/* Quando o checkbox está marcado, destaca o label inteiro */
+.periodo-option:has(.periodo-option__checkbox:checked) {
+  background: var(--color-primary-light);
+  border-color: rgba(10, 75, 170, 0.4);
+  color: var(--color-primary-dark);
+}
+
+/* ============================================================
+   Campo de SENHA (link/botão dentro do form)
+   ============================================================ */
+
+.senha-field {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.senha-field__label {
+  font-weight: 600;
+}
+
+.senha-field__btn {
+  justify-self: start;
+  padding: 0.5rem 0.9rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+  border: 1px solid rgba(10, 75, 170, 0.2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+  text-decoration: none;
+}
+
+.senha-field__btn:hover {
+  background: #dce8f8;
+  border-color: rgba(10, 75, 170, 0.35);
+  text-decoration: none;
+}
+
+/* ============================================================
+   Campos somente leitura (CPF / CNH)
+   ============================================================ */
+
+.field--readonly .input {
+  background: var(--color-gray-100);
+  color: var(--text-muted);
+  cursor: default;
+}
+
+.field__hint--muted {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   Mensagem de sucesso inline
+   ============================================================ */
+
+.editar-instrutor__success {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: #197a47;
+}
+
+/* ============================================================
+   Zona de exclusão de conta
+   ============================================================ */
+
+.zona-perigo {
+  margin-top: var(--space-8);
+  padding: var(--space-5) var(--space-6);
+  background: rgba(227, 0, 15, 0.04);
+  border: 1px solid rgba(227, 0, 15, 0.2);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.zona-perigo__aviso {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text);
+}
+
+.zona-perigo__acoes {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   Responsividade
+   ============================================================ */
+
+/* Tablet: empilha em coluna única */
+@media (max-width: 860px) {
+  .editar-instrutor-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "foto"
+      "perfil"
+      "aula";
+  }
+
+  .editar-instrutor-page {
+    max-width: 32rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .foto-preview-row {
+    flex-direction: column;
+  }
+
+  .periodo-group {
+    gap: var(--space-2);
+  }
+
+  .zona-perigo__acoes {
+    flex-direction: column;
+  }
+}

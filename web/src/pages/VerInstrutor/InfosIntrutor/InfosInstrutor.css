@@ -1,0 +1,183 @@
+/* Detalhes do instrutor (coluna esquerda) */
+
+.instrutor-page__left {
+  min-width: 0;
+}
+
+.instrutor-profile__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.instrutor-profile__photo {
+  width: 7.5rem;
+  height: 7.5rem;
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--color-white);
+  box-shadow: var(--shadow-md);
+}
+
+.instrutor-profile__name {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.5vw, var(--text-2xl));
+  font-weight: 700;
+  color: var(--color-gray-700);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.instrutor-profile__local {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* 4 blocos de estatísticas */
+.instrutor-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+  list-style: none;
+  padding: 0;
+}
+
+.instrutor-stats__item {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  min-height: 5.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-1);
+}
+
+.instrutor-stats__value {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  color: var(--color-gray-700);
+  line-height: 1.2;
+}
+
+.instrutor-stats__value--badges {
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.instrutor-stats__emoji {
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.instrutor-stats__label {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.instrutor-stats__item--categories {
+  justify-content: flex-start;
+}
+
+/* Sobre mim */
+.instrutor-about {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.instrutor-about__title {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-gray-700);
+}
+
+.instrutor-about__text {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.6;
+  font-family: var(--font-serif);
+}
+
+/* Veículos */
+.instrutor-vehicles {
+  margin-top: var(--space-6);
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.instrutor-vehicles__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.instrutor-vehicles__title {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-gray-700);
+}
+
+.instrutor-vehicles__count {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.instrutor-vehicles__list {
+  display: grid;
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+  gap: var(--space-3);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.instrutor-vehicles__empty {
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+@media (min-width: 640px) {
+  .instrutor-vehicles__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 960px) {
+  .instrutor-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .instrutor-profile__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .instrutor-stats {
+    grid-template-columns: 1fr;
+  }
+}

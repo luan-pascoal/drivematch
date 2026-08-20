@@ -1,0 +1,119 @@
+/* --------------------------------------------------------------------------
+   [SolicitacoesHeader]
+   Título + subtítulo à esquerda. À direita, na mesma linha, o dropdown
+   de filtro seguido do contador total. .solic-page-top agrupa header +
+   divisor com espaçamento PEQUENO entre eles (a linha fica logo abaixo
+   do subtítulo/dropdown); o espaço maior até a lista vem do gap do
+   .stack--lg no componente pai.
+-------------------------------------------------------------------------- */
+.solic-page-top {
+  display: flex;
+  flex-direction: column;
+}
+
+.solic-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-3);
+}
+
+.solic-page__title {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-gray-700);
+}
+
+.solic-page__subtitle {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  font-family: var(--font-serif);
+}
+
+.solic-header__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-shrink: 0;
+}
+
+.solic-count-wrap {
+  text-align: right;
+  line-height: 1.15;
+}
+
+.solic-count {
+  display: block;
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  letter-spacing: -0.02em;
+}
+
+.solic-count__label {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* --------------------------------------------------------------------------
+   [SolicitacoesFilter]
+   Dropdown nativo (<select>) estilizado como pílula, com seta própria
+   (SVG) por cima — sem imagem externa. À esquerda do contador total.
+-------------------------------------------------------------------------- */
+.solic-filter {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.solic-filter__select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 1px solid var(--color-gray-200);
+  background: var(--color-white);
+  padding: 0.55rem 2.25rem 0.55rem 1.05rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--color-primary-dark);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.solic-filter__select:hover {
+  border-color: rgba(10, 75, 170, 0.35);
+}
+
+.solic-filter__select:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.solic-filter__icon {
+  position: absolute;
+  right: 0.85rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   [Divisores]
+   Mais fina que antes (3px -> 1.5px), fica logo abaixo do header.
+-------------------------------------------------------------------------- */
+.divider--strong {
+  width: 100%;
+  height: 1.5px;
+  background: var(--color-primary-dark);
+  border: 0;
+  opacity: 0.9;
+}

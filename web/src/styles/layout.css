@@ -118,7 +118,8 @@
 }
 
 .app-main {
-  padding: var(--space-8) 0;
+    padding: var(--space-8) 0;
+    overflow: clip;
 }
 
 .app-main--center {
@@ -140,4 +141,13 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.full-width-wrapper {
+    width: 100%;
+    max-width: 100vw;
+    padding-left: max(var(--space-4), calc((100% - var(--container-max)) / 2));
+    padding-right: max(var(--space-4), calc((100% - var(--container-max)) / 2));
+    overflow: clip;
+    overflow-clip-margin: 0;
 }

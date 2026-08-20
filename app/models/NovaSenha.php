@@ -1,40 +1,39 @@
 <?php
 
-/*
-
 class NovaSenha{
 
-    protected function checarExpiracaoToken($pwdResetSelector, $dataAtual){
+    protected function checarExpiracaoToken($selector, $dataAtual){
 
-        return DataBase::table('pwdreset')-> select() ->where("pwdResetSelector = :pwdResetSelector AND pwdResetExpires >= :dataAtual", 
-        ["pwdResetSelector" => $pwdResetSelector, "dataAtual" => $dataAtual]);
-
-    }
-
-    protected function getUsuario($email){
-
-        return DataBase::table('users')-> select() ->where("email = :email", ["email" => $email]);     
+        return DataBase::table('tb_RedefinirSenha')
+        ->select() 
+        ->where("Rdf_selector = :selector AND Rdf_dataexpiracao >= :dataAtual", 
+        ["selector" => $selector, "dataAtual" => $dataAtual]);
 
     }
 
-    protected function atualizarSenhaUsuario($password, $email){
+    protected function acharUsuario($id){
 
-        $novaSenha = password_hash($password, PASSWORD_DEFAULT);
-
-        $arr['password'] = $novaSenha;
-
-        return DataBase::table('users')-> update($arr) ->where("email = :email", ["email" => $email]);     
+        return DataBase::table('tb_usuario')-> select() ->where("Usu_id = :id", ["id" => $id]);     
 
     }
 
-    protected function removerToken($email){
+    protected function atualizarSenhaUsuario($senha, $id){
 
-        return DataBase::table('pwdreset')-> delete() ->where("pwdResetEmail = :pwdResetEmail", ["pwdResetEmail" => $email]);  
+        $novaSenha = password_hash($senha, PASSWORD_DEFAULT);
+
+        $arr['Usu_senha'] = $novaSenha;
+
+        return DataBase::table('tb_usuario')-> update($arr) ->where("Usu_id = :id", ["id" => $id]);     
+
+    }
+
+    protected function removerToken($id){
+
+        return DataBase::table('tb_RedefinirSenha')-> delete() ->where("Rdf_usuarioid = :id", ["id" => $id]);  
 
     }
 
 }
 
-*/
 
 ?>

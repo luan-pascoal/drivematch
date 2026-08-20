@@ -2,17 +2,17 @@
     
 class UsuarioController extends Usuario {
 
-    private $nome;
-    private $email;
-    private $senha;
-    private $confirmacaoSenha;
-    private $cpf;
-    private $genero;
-    private $foto;
-    private $termos;
-    private $status_online;
-    private $id;
-    private $senhaAtual;
+    protected $nome;
+    protected $email;
+    protected $senha;
+    protected $confirmacaoSenha;
+    protected $cpf;
+    protected $genero;
+    protected $foto;
+    protected $termos;
+    protected $status_online;
+    protected $id;
+    protected $senhaAtual;
 
 
     /************************************************************
@@ -72,7 +72,7 @@ class UsuarioController extends Usuario {
         );
 
         if ($resultado === false) {
-            $erros["bd"] = "Erro interno ao inserir o usuário. Tente novamente.";
+            $erros["bd"] = "Erro interno ao cadastrar o usuário. Tente novamente.";
         }
 
         if (!empty($erros)) {
@@ -204,8 +204,6 @@ class UsuarioController extends Usuario {
             "sucesso" => true,
             "mensagem" => "Perfil atualizado com sucesso!"
         ]);
-
-
 
         return;
 
@@ -415,7 +413,6 @@ class UsuarioController extends Usuario {
         // Array de particulas, devem estar em letra minuscula
         $particulas = ['de', 'da', 'do', 'dos', 'das'];
 
-        
         // Vamos converter o nome todo para CASE_TITLE, isso é: primeira letra de cada palavra maiúscula
         // Problema: se o nome tiver uma particula, essa particula vai ficar com a primeira letra maiuscula
         $nome = mb_convert_case($this->nome, MB_CASE_TITLE, "UTF-8");

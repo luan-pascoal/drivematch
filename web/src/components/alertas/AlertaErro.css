@@ -1,0 +1,38 @@
+.alerta-erro {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #e53935;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    /*Garante que o alerta fique na frente de todos os outros elementos da tela. Quanto maior o número, mais na frente fica. */
+    z-index: 9999;
+
+    /* Aplica a animação slidein com duração de 0.3 segundos. O ease é o ritmo — começa rápido e desacelera no final. */
+    animation: slidein 0.3s ease;
+}
+
+/* Define a animação slidein */
+@keyframes slidein {
+
+    /* from é o estado inicial */
+    from {
+        /* invisivel */
+        opacity: 0;
+        /* deslocado 50px para a direita, 
+        se fosse pra esquerda:  translateX(-50px)*/
+        transform: translateX(50px);
+    }
+
+    /* to é o estado final — visível */
+    to {
+        /* visivel */
+        opacity: 1;
+        /*  na posição original (translateX(0) */
+        transform: translateX(0);
+    }
+}

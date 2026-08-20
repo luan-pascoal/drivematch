@@ -1,0 +1,559 @@
+/* ─── Veículos — página principal ─────────────────────────────────────────── */
+
+.veiculos-topo {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+    flex-wrap: wrap;
+}
+
+.veiculos-topo__contador {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--color-gray-100);
+    border: 1px solid var(--color-gray-200);
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    white-space: nowrap;
+}
+
+.veiculos-topo__acoes {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.veiculos-topo__btn-adicionar {
+    font-size: var(--text-sm);
+    padding: 0.5rem 1rem;
+}
+
+/* ─── Carrossel ───────────────────────────────────────────────────────────── */
+
+.carrossel {
+    position: relative;
+    padding: var(--space-4) 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Estado vazio: centraliza o card de adição */
+.carrossel--vazio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 320px;
+}
+
+/* Centraliza o conjunto seta + wrapper + seta na tela */
+.carrossel__controles {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* ← centraliza horizontalmente */
+    gap: var(--space-3);
+}
+
+.carrossel__wrapper {
+    overflow: hidden;
+    /* padding só vertical — sem padding horizontal para não cortar cards */
+    padding: var(--space-2) 0 var(--space-4);
+    box-sizing: border-box;
+    /* largura controlada pelo JS via wrapperRef.current.style.width */
+}
+
+.carrossel__track {
+    display: flex;
+    width: max-content;
+    gap: var(--space-3);
+    transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+/* Setas de navegação */
+.carrossel__seta {
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: 1px solid var(--color-gray-200);
+    background: var(--color-white);
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+.carrossel__seta:hover {
+    background: var(--color-primary-light);
+    box-shadow: 0 4px 16px rgba(10, 75, 170, 0.15);
+    transform: scale(1.08);
+}
+
+.carrossel__seta-icone {
+    width: 18px;
+    height: 18px;
+    display: block;
+    pointer-events: none;
+}
+
+/* ─── Card de veículo ─────────────────────────────────────────────────────── */
+
+.veiculo-card {
+    flex-shrink: 0;
+    width: 260px;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: box-shadow 180ms ease, transform 180ms ease;
+    border-top: 3px solid var(--color-primary);
+}
+
+.veiculo-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.veiculo-card__img {
+     height: 160px;
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0 0.5rem 0; /* só espaço embaixo, antes da linha */
+    overflow: hidden;
+}
+
+.veiculo-card__img-placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* preenche sem distorcer */
+    display: block;
+}
+/* Header do card: ícone de tipo + marca + modelo */
+.veiculo-card__header {
+    display: flex;
+    align-items: center; /* antes: flex-start */
+    gap: var(--space-3);
+    padding: var(--space-3);
+}
+
+.veiculo-card__tipo-icon {
+    width: 28px;   /* antes: 18px */
+    height: 28px;  /* antes: 18px */
+    flex-shrink: 0;
+    object-fit: contain;
+    margin-top: 0; /* remove o deslocamento */
+}
+
+.veiculo-card__marca {
+    margin: 0;
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.veiculo-card__modelo {
+    margin: 2px 0 0;
+    font-size: var(--text-base); 
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+}
+
+/* Lista de informações */
+.veiculo-card__info {
+    list-style: none;
+    margin: 0;
+    padding: 0 var(--space-3) var(--space-3);
+    display: grid;
+    gap: 0;
+    flex: 1;
+}
+
+.veiculo-card__info li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--text-xs);
+    padding: 0.3rem 0;
+    border-bottom: 1px solid var(--color-gray-100);
+    color: var(--text);
+    gap: var(--space-2);
+}
+
+.veiculo-card__info li:last-child {
+    border-bottom: none;
+}
+
+.veiculo-card__info-label {
+    color: var(--text-muted);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Badge pedal auxiliar */
+.veiculo-card__pedal {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+}
+
+.veiculo-card__pedal--sim {
+    background: rgba(25, 135, 84, 0.1);
+    color: #145c38;
+    border-color: rgba(25, 135, 84, 0.25);
+}
+
+.veiculo-card__pedal--nao {
+    background: var(--color-gray-100);
+    color: var(--text-muted);
+    border-color: var(--color-gray-200);
+}
+
+/* Ações do card */
+.veiculo-card__acoes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3) var(--space-3);
+    border-top: 1px solid var(--color-gray-200);
+}
+
+.veiculo-card__btn-editar {
+    background: #dce8f8;
+    border-color: rgba(10, 75, 170, 0.35);
+    color: #07357a;
+    text-decoration: none;
+    width: 100%;
+    font-size: var(--text-sm);
+    padding: 0.55rem 0.75rem;
+    border-radius: var(--radius-sm);
+}
+
+.veiculo-card__btn-excluir {
+    width: 100%;
+    font-size: var(--text-sm);
+    padding: 0.55rem 0.75rem;
+    border-radius: var(--radius-sm);
+    line-height: 1;
+}
+
+.veiculo-card__btn-excluir {
+    line-height: 1;
+}
+
+/* ─── Card de adição ──────────────────────────────────────────────────────── */
+
+.veiculo-card--adicionar {
+    width: 260px;
+    min-height: 280px;
+    border: 2px dashed var(--color-gray-200);
+    border-top: 2px dashed var(--color-gray-200);
+    background: transparent;
+    box-shadow: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.veiculo-card--adicionar:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
+    transform: translateY(-2px);
+    box-shadow: none;
+}
+
+.veiculo-card--adicionar-solo {
+    width: 280px;
+    min-height: 380px; /* antes: 320px */
+    text-align: center;
+    padding: var(--space-8);
+}
+
+.veiculo-card__add-icon {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    transition: transform 160ms ease;
+}
+
+.veiculo-card--adicionar:hover .veiculo-card__add-icon {
+    transform: scale(1.1);
+}
+
+.veiculo-card__add-texto {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* ─── Stepper ─────────────────────────────────────────────────────────────── */
+
+.stepper {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-6);
+}
+
+.stepper__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex: 1;
+}
+
+.stepper__item:not(:last-child)::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: var(--color-gray-200);
+    margin: 0 var(--space-2);
+    border-radius: 2px;
+}
+
+.stepper__item--concluido:not(:last-child)::after {
+    background: var(--color-primary);
+}
+
+.stepper__num {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    border: 2px solid var(--color-gray-200);
+    background: var(--color-white);
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 160ms ease;
+}
+
+.stepper__item--ativo .stepper__num {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+.stepper__item--concluido .stepper__num {
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.stepper__label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.stepper__item--ativo .stepper__label {
+    color: var(--color-primary);
+}
+
+/* ─── Popup: seleção de tipo ──────────────────────────────────────────────── */
+
+.popup-tipo__pergunta {
+    font-size: var(--text-md);
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 var(--space-5);
+}
+
+.popup-tipo__opcoes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+}
+
+.popup-tipo__btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-6) var(--space-4);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-gray-200);
+    background: var(--color-white);
+    color: var(--text);
+    font-size: var(--text-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 160ms ease;
+}
+
+.popup-tipo__btn:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.popup-tipo__btn--ativo {
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.popup-tipo__icone {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+}
+
+/* ─── Popup de edição ─────────────────────────────────────────────────────── */
+
+.popup-editar__info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-gray-100);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-4);
+}
+
+.popup-editar__tipo-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.popup-editar__marca {
+    margin: 0;
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.popup-editar__modelo {
+    margin: 2px 0 0;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--text);
+}
+
+/* ─── Toggle (pedal auxiliar) ─────────────────────────────────────────────── */
+
+.toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    cursor: pointer;
+    user-select: none;
+}
+
+.toggle__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.toggle__track {
+    position: relative;
+    width: 2.75rem;
+    height: 1.5rem;
+    border-radius: 999px;
+    background: var(--color-gray-200);
+    border: 1px solid var(--color-gray-200);
+    transition: background 180ms ease, border-color 180ms ease;
+    flex-shrink: 0;
+}
+
+.toggle__thumb {
+    position: absolute;
+    top: 50%;
+    left: 3px;
+    transform: translateY(-50%);
+    width: 1.05rem;
+    height: 1.05rem;
+    border-radius: 50%;
+    background: var(--color-white);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    transition: left 180ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toggle__input:checked+.toggle__track {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.toggle__input:checked+.toggle__track .toggle__thumb {
+    left: calc(100% - 1.05rem - 3px);
+}
+
+.toggle__label-texto {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text);
+}
+
+.toggle__input:focus-visible+.toggle__track {
+    box-shadow: var(--focus-ring);
+}
+
+/* ─── Responsividade ──────────────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+    .popup {
+        max-width: 100%;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        max-height: 92dvh;
+        animation: slideUpMobile 220ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes slideUpMobile {
+        from {
+            transform: translateY(100%);
+        }
+
+        to {
+            transform: translateY(0);
+        }
+    }
+}
+
+/* Acessibilidade: reduz animações */
+@media (prefers-reduced-motion: reduce) {
+
+    .carrossel__track,
+    .popup,
+    .popup-overlay,
+    .veiculo-card,
+    .veiculo-card--adicionar,
+    .toggle__track,
+    .toggle__thumb {
+        transition: none;
+        animation: none;
+    }
+}

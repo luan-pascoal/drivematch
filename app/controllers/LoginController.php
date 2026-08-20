@@ -15,13 +15,10 @@ class LoginController {
         $this->validarSenha();
 
         if (!empty($this->erros)){
-
             http_response_code(422);
-
             echo json_encode([
                 "Erro" => $this->erros
             ]);
-
             return;
         }
 
@@ -30,65 +27,64 @@ class LoginController {
         $resultado = $usuario->acharUsuario($this->email);
 
         if ($resultado === false){
-
             $this->erros['bd'] = "Erro interno ao logar o usuário. Tente novamente.";
         }
 
         if (empty($resultado)){
-
             $this->erros['sistema'] = "Email ou senha incorreta";
         }
 
         if (!empty($this->erros)){
-
             http_response_code(422);
-
             echo json_encode([
                 "Erro" => $this->erros
             ]);
-
             return;
         }
 
         $dadosUsuario = $resultado[0];
 
         if (!password_verify($this->senha, $dadosUsuario->Usu_senha)){
-
             $this->erros['sistema'] = "Email ou senha incorreta";
         }
 
         if (!empty($this->erros)){
-
             http_response_code(422);
-
             echo json_encode([
                 "Erro" => $this->erros
             ]);
-
             return;
         }
 
+        $instrutorModel = new Instrutor();
+        $resultadoInstrutor =  $instrutorModel->checarInstrutor($dadosUsuario->Usu_id);
         $session = new Session();
-
-        $session->set('USER', [
-
-            'id' => $dadosUsuario->Usu_id,
-            'nome' => $dadosUsuario->Usu_nome,
-            'email' => $dadosUsuario->Usu_email,
-            'tipo' => "usuario",
-            'LOGGED_IN' => 1
-
-        ]);
+        
+        if (!empty($resultadoInstrutor)) {
+            $dadosInstrutor = $resultadoInstrutor[0];
+            $session->set('USER', [
+                'id'           => $dadosUsuario->Usu_id,
+                'instrutor_id' => $dadosInstrutor->Ins_id,
+                'nome'         => $dadosUsuario->Usu_nome,
+                'email'        => $dadosUsuario->Usu_email,
+                'tipo'         => 'instrutor',
+                'LOGGED_IN'    => 1
+            ]);
+        } else {
+            $session->set('USER', [
+                'id'        => $dadosUsuario->Usu_id,
+                'nome'      => $dadosUsuario->Usu_nome,
+                'email'     => $dadosUsuario->Usu_email,
+                'tipo'      => 'usuario',
+                'LOGGED_IN' => 1
+            ]);
+        }
 
         http_response_code(200);
-
         echo json_encode([
-
             "sucesso" => true,
             "mensagem" => "Usuário logado com sucesso"
-
         ]);
-
         return;
     }
 

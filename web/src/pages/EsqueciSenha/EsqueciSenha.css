@@ -1,0 +1,96 @@
+/* Página: Esqueci minha senha */
+
+.esqueci-senha {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100dvh - 12rem);
+  padding: var(--space-6) var(--space-4);
+}
+
+/* ---------- Estado: formulário (design original) ---------- */
+
+.esqueci-senha__card {
+  width: 100%;
+  max-width: 26rem;
+  padding: var(--space-8) var(--space-6);
+  display: grid;
+  gap: var(--space-6);
+  text-align: center;
+}
+
+.esqueci-senha__header {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.esqueci-senha__title {
+  margin: 0;
+  font-size: var(--text-2xl);
+  letter-spacing: -0.03em;
+}
+
+.esqueci-senha__subtitle {
+  margin: 0;
+}
+
+.esqueci-senha__form {
+  text-align: left;
+}
+
+.esqueci-senha__form .field {
+  margin-top: 0;
+}
+
+.esqueci-senha__submit {
+  width: 100%;
+  margin-top: var(--space-2);
+}
+
+.esqueci-senha__voltar {
+  justify-self: center;
+}
+
+/* ---------- Estado: sucesso — card branco padrão, acento só no ícone ---------- */
+
+.esqueci-senha__sucesso-card {
+  width: 100%;
+  max-width: 26rem;
+  padding: var(--space-8) var(--space-6) var(--space-6);
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.esqueci-senha__sucesso-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.esqueci-senha__sucesso-msg {
+  margin: 0;
+  max-width: 26ch;
+  font-size: var(--text-md);
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.esqueci-senha__login-btn {
+  width: 100%;
+  margin-top: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.esqueci-senha__login-icon {
+  flex-shrink: 0;
+}

@@ -1,0 +1,175 @@
+/* --------------------------------------------------------------------------
+   [SolicitacaoCard]
+   Grid: cada informação é uma coluna. column-gap padroniza automaticamente
+   o espaço entre TODAS as colunas de uma vez. Nome tem largura própria e
+   generosa (minmax), e período/cidade usam 1fr — absorvem o espaço
+   restante e esticam a linha até o fim exato da régua azul
+   (.divider--strong), sem deixar vão em branco à direita.
+-------------------------------------------------------------------------- */
+.solic-lista {
+  display: flex;
+  flex-direction: column;
+}
+
+.solic-card {
+  display: grid;
+  grid-template-columns:
+    40px                    /* avatar */
+    minmax(160px, 220px)    /* nome — 2 primeiros nomes, espaço generoso */
+    1px                     /* linha divisória vertical — nome / categoria */
+    60px                    /* categoria */
+    1fr                     /* período — estica */
+    1fr                     /* cidade — estica */
+    1px                     /* linha divisória vertical — cidade / ações */
+    minmax(80px, auto);     /* ações — largura mínima constante entre pendente/aceita/recusada */
+  align-items: center;
+  column-gap: var(--space-5);
+  padding: var(--space-3) var(--space-2);
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.solic-lista .solic-card:last-child {
+  border-bottom: none;
+}
+
+/* Bolinha da foto */
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--color-gray-100);
+}
+
+.avatar-circle__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Nome — só os dois primeiros nomes (ex: "Luiz Cavalcante"), nome
+   completo fica disponível via atributo title (tooltip / acessibilidade) */
+.solic-card__name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Linha vertical separando nome do restante das informações */
+.solic-card__divider {
+  width: 1px;
+  height: 26px;
+  background: var(--color-gray-200);
+  justify-self: center;
+}
+
+/* Categoria — badge sempre centralizado na coluna, largura fixa de 60px
+   garante que período/cidade não desalinhem entre A/B/AB */
+.solic-card__categoria {
+  display: flex;
+  justify-content: center;
+}
+
+/* Período e cidade — ícone + texto, cada um ocupa 1fr (estica pra
+   preencher a linha até o fim) */
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--text-sm);
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.info-item svg {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* Período fica num bloco de largura FIXA (cabe o maior rótulo com
+   folga), centralizado dentro da coluna. Assim o ícone nasce sempre no
+   mesmo x e a distância até categoria/cidade fica igual em toda linha —
+   ao contrário de centralizar pelo conteúdo, que varia com o tamanho
+   de cada palavra ("Manhã" x "Tarde" etc). */
+.info-item--periodo {
+  width: 100px;
+  margin: 0 auto;
+  justify-content: flex-start;
+}
+
+/* Ações — sempre alinhadas na borda direita da linha, largura mínima
+   constante (minmax acima) pra não pular quando o conteúdo muda de
+   2 botões (pendente) pra 1 badge de texto (aceita/recusada) */
+.solic-card__actions {
+  display: flex;
+  justify-self: end;
+  gap: var(--space-1);
+}
+
+/* --------------------------------------------------------------------------
+   [EmptyState]
+-------------------------------------------------------------------------- */
+.empty-state {
+  padding: var(--space-10) var(--space-4);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Responsivo
+   Abaixo de 860px o grid vira flex-wrap: avatar+nome ficam na 1ª linha,
+   categoria/período/cidade quebram pra 2ª linha alinhados com o nome
+   (padding-left simula a coluna do avatar), ações vão pro canto direito.
+   ========================================================================== */
+@media (max-width: 860px) {
+  .solic-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: var(--space-2);
+  }
+
+  .solic-card__divider {
+    display: none;
+  }
+
+  .solic-card__name {
+    flex: 1 1 auto;
+  }
+
+  .solic-card__categoria {
+    flex: 0 0 auto;
+    padding-left: calc(40px + var(--space-5));
+  }
+
+  .info-item--periodo,
+  .info-item--cidade {
+    flex: 0 0 auto;
+  }
+
+  .info-item--periodo {
+    width: auto;
+    margin: 0;
+    justify-content: flex-start;
+  }
+
+  .solic-card__actions {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .solic-card__name {
+    flex-basis: 100%;
+  }
+
+  .solic-card__categoria {
+    padding-left: var(--space-4);
+  }
+}

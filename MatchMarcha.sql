@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS Tb_Usuario (
 -- =========================
 CREATE TABLE IF NOT EXISTS Tb_Cidade (
     Cid_id   INT AUTO_INCREMENT PRIMARY KEY,
-    Cid_nome VARCHAR(128) NOT NULL
+    Cid_nome VARCHAR(128) NOT NULL,
+    Cid_UF   CHAR(2)      NOT NULL
 );
 
 -- =========================
@@ -39,6 +40,7 @@ CREATE TABLE IF NOT EXISTS Tb_Marca (
 CREATE TABLE IF NOT EXISTS Tb_Modelo (
     Mod_id      INT AUTO_INCREMENT PRIMARY KEY,
     Mod_nome    VARCHAR(128) NOT NULL,
+    Mod_ano     INT          NOT NULL,
     Mod_marcaid INT          NOT NULL,
 
     CONSTRAINT fk_modelo_marca
@@ -55,16 +57,23 @@ CREATE TABLE IF NOT EXISTS Tb_Cor (
 );
 
 -- =========================
+-- TABELA PERIODO
+-- =========================
+CREATE TABLE IF NOT EXISTS Tb_Periodo (
+    Per_id   INT AUTO_INCREMENT PRIMARY KEY,
+    Per_nome VARCHAR(10) NOT NULL
+);
+
+-- =========================
 -- TABELA INSTRUTOR
 -- =========================
 CREATE TABLE IF NOT EXISTS Tb_Instrutor (
-    Ins_id          INT AUTO_INCREMENT PRIMARY KEY,
-    Ins_usuarioid   INT         NOT NULL,
-    Ins_cnh         VARCHAR(16) NOT NULL UNIQUE,
-    Ins_aulaperiodo VARCHAR(32) NOT NULL,
-    Ins_aulapreco   FLOAT       NOT NULL,
-    Ins_aulatipo    CHAR(1)     NOT NULL,
-    Ins_cidadeid    INT         NOT NULL,
+    Ins_id        INT         AUTO_INCREMENT PRIMARY KEY,
+    Ins_usuarioid INT         NOT NULL,
+    Ins_cnh       VARCHAR(16) NOT NULL UNIQUE,
+    Ins_aulapreco FLOAT       NOT NULL,
+    Ins_aulatipo  CHAR(1)     NOT NULL,
+    Ins_cidadeid  INT         NOT NULL,
 
     CONSTRAINT fk_instrutor_usuario
         FOREIGN KEY (Ins_usuarioid)
@@ -76,12 +85,29 @@ CREATE TABLE IF NOT EXISTS Tb_Instrutor (
 );
 
 -- =========================
+-- TABELA INSTRUTOR PERIODO
+-- =========================
+CREATE TABLE IF NOT EXISTS Tb_InstrutorPeriodo (
+    Inp_id          INT AUTO_INCREMENT PRIMARY KEY,
+    Inp_instrutorid INT NOT NULL,
+    Inp_periodoid   INT NOT NULL,
+
+    CONSTRAINT fk_instrutorperiodo_instrutor
+        FOREIGN KEY (Inp_instrutorid)
+        REFERENCES Tb_Instrutor(Ins_id),
+
+    CONSTRAINT fk_instrutorperiodo_periodo
+        FOREIGN KEY (Inp_periodoid)
+        REFERENCES Tb_Periodo(Per_id)
+);
+
+-- =========================
 -- TABELA CONTATO
 -- =========================
 CREATE TABLE IF NOT EXISTS Tb_Contato (
     Ctt_id          INT AUTO_INCREMENT PRIMARY KEY,
     Ctt_datacriacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    Ctt_datadelete  TIMESTAMP NULL DEFAULT NULL,
+    Ctt_datadelete  TIMESTAMP NULL     DEFAULT NULL,
     Ctt_usuarioid   INT       NOT NULL,
     Ctt_instrutorid INT       NOT NULL,
 
@@ -103,7 +129,7 @@ CREATE TABLE IF NOT EXISTS Tb_Mensagem (
     Msg_remetente   VARCHAR(32)   NOT NULL,
     Msg_datacriacao TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     Msg_dataupdate  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    Msg_datadelete  TIMESTAMP     NULL DEFAULT NULL,
+    Msg_datadelete  TIMESTAMP     NULL     DEFAULT NULL,
     Msg_contatoid   INT           NOT NULL,
 
     CONSTRAINT fk_mensagem_contato
@@ -119,8 +145,13 @@ CREATE TABLE IF NOT EXISTS Tb_Aula (
     Au_data        DATE    NOT NULL,
     Au_horario     TIME    NOT NULL,
     Au_categoria   CHAR(1) NOT NULL,
+    Au_cidadeid    INT     NOT NULL,
     Au_usuarioid   INT     NOT NULL,
     Au_instrutorid INT     NOT NULL,
+
+    CONSTRAINT fk_aula_cidade
+        FOREIGN KEY (Au_cidadeid)
+        REFERENCES Tb_Cidade(Cid_id),
 
     CONSTRAINT fk_aula_usuario
         FOREIGN KEY (Au_usuarioid)
@@ -131,14 +162,15 @@ CREATE TABLE IF NOT EXISTS Tb_Aula (
         REFERENCES Tb_Instrutor(Ins_id)
 );
 
+
 -- =========================
 -- TABELA SOLICITACAO AULA
 -- =========================
 CREATE TABLE IF NOT EXISTS Tb_SolicitacaoAula (
-    Slc_id          INT AUTO_INCREMENT PRIMARY KEY,
+    Slc_id          INT         AUTO_INCREMENT PRIMARY KEY,
     Slc_categoria   VARCHAR(16) NOT NULL,
     Slc_periodo     VARCHAR(16) NOT NULL,
-    Slc_regiao      VARCHAR(64) NOT NULL,
+    Slc_cidadeid    INT         NOT NULL,
     Slc_status      VARCHAR(16) NOT NULL,
     Slc_usuarioid   INT         NOT NULL,
     Slc_instrutorid INT         NOT NULL,
@@ -149,7 +181,11 @@ CREATE TABLE IF NOT EXISTS Tb_SolicitacaoAula (
 
     CONSTRAINT fk_solicitacao_instrutor
         FOREIGN KEY (Slc_instrutorid)
-        REFERENCES Tb_Instrutor(Ins_id)
+        REFERENCES Tb_Instrutor(Ins_id),
+
+    CONSTRAINT fk_solicitacao_cidade
+        FOREIGN KEY (Slc_cidadeid)
+        REFERENCES Tb_Cidade(Cid_id)
 );
 
 -- =========================

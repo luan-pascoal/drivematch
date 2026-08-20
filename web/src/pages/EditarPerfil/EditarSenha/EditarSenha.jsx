@@ -7,7 +7,7 @@ import { SiteHeaderLoggedActions, SiteHeaderGuestActions } from '../../../compon
 import axios from 'axios';
 import './EditarSenha.css'; 
 
-export function EditarSenha({ usuario, dadosUsuario, carregarUsuario, atualizarUsuario}) {
+export function EditarSenha({ usuario, dadosUsuario, carregarUsuario }) {
 
     const [arrayErrosBackend, setArrayErrosBackend] = useState([]);
     const [mostrarAtual, setMostrarAtual] = useState(false);

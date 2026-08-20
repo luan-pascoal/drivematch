@@ -10,8 +10,9 @@ export function AppLayout({
   centerMain = false,
   footerLeft = '© MatchMarcha 2026',
   footerRight = 'Projeto Acadêmico',
+  fullWidth,
 }) {
-  
+
   return (
     <div className="app-shell">
       <a className="skip-link" href="#main">
@@ -48,6 +49,11 @@ export function AppLayout({
         role="main"
       >
         <div className="container">{children}</div>
+        {fullWidth && (
+          <div className="full-width-wrapper">
+            {fullWidth}
+          </div>
+        )}
       </main>
 
       <footer className="app-footer" role="contentinfo">
@@ -59,4 +65,3 @@ export function AppLayout({
     </div>
   );
 }
-

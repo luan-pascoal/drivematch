@@ -1,0 +1,119 @@
+body.modal-aberto {
+    overflow: hidden;
+}
+ 
+/* ── Overlay ────────────────────────────────────────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: var(--space-4);
+ 
+    /* Animação de entrada */
+    animation: modal-fade-in 180ms ease;
+}
+ 
+@keyframes modal-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+ 
+/* ── Card do modal ──────────────────────────────────────────────────────── */
+.modal {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    max-width: 30rem;
+    width: 100%;
+    box-shadow: var(--shadow-md);
+    overflow: hidden; /* garante que a borda superior respeite o border-radius */
+ 
+    /* Animação de entrada */
+    animation: modal-slide-in 200ms ease;
+}
+ 
+@keyframes modal-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+ 
+/* ── Modificador: aviso (borda dourada) ─────────────────────────────────── */
+/* Segue o mesmo padrão do error-page__503 do projeto */
+.modal--aviso {
+    border-top: 6px solid var(--color-secondary);
+}
+ 
+/* ── Corpo do modal ─────────────────────────────────────────────────────── */
+.modal__corpo {
+    padding: var(--space-8) var(--space-6) var(--space-5);
+    display: grid;
+    gap: var(--space-4);
+}
+ 
+.modal__titulo {
+    margin: 0;
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--cor-primaria, #0A4BAA);
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+ 
+.modal__icone {
+    color: var(--color-secondary);
+    flex-shrink: 0;
+}
+ 
+.modal__texto {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+ 
+.modal__pergunta {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text);
+}
+ 
+/* ── Ações ──────────────────────────────────────────────────────────────── */
+.modal__acoes {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: flex-end;
+    padding: var(--space-5) var(--space-6) var(--space-6);
+    border-top: 1px solid var(--color-gray-200);
+}
+ 
+.modal__btn {
+    min-width: 8rem;
+}
+ 
+/* ── Responsivo ─────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+    .modal__acoes {
+        flex-direction: column-reverse;
+    }
+ 
+    .modal__btn {
+        width: 100%;
+    }
+}
+ 

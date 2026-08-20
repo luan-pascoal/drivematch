@@ -22,235 +22,6 @@
   align-items: start;
 }
 
-/* Coluna esquerda — rola com a página */
-.instrutor-page__left {
-  min-width: 0;
-}
-
-.instrutor-profile__header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-5);
-  margin-bottom: var(--space-6);
-}
-
-.instrutor-profile__photo {
-  width: 7.5rem;
-  height: 7.5rem;
-  border-radius: var(--radius-lg);
-  object-fit: cover;
-  flex-shrink: 0;
-  border: 2px solid var(--color-white);
-  box-shadow: var(--shadow-md);
-}
-
-.instrutor-profile__name {
-  margin: 0;
-  font-size: clamp(1.35rem, 2.5vw, var(--text-2xl));
-  font-weight: 700;
-  color: var(--color-gray-700);
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-
-.instrutor-profile__local {
-  margin: var(--space-2) 0 0;
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-}
-
-/* 4 blocos de estatísticas */
-.instrutor-stats {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-3);
-  margin-bottom: var(--space-8);
-  list-style: none;
-  padding: 0;
-}
-
-.instrutor-stats__item {
-  background: var(--color-white);
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
-  min-height: 5.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: var(--space-1);
-}
-
-.instrutor-stats__value {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-weight: 700;
-  font-size: var(--text-lg);
-  color: var(--color-gray-700);
-  line-height: 1.2;
-}
-
-.instrutor-stats__value--badges {
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.instrutor-stats__emoji {
-  font-size: 1.25rem;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
-.instrutor-stats__label {
-  margin: 0;
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  line-height: 1.35;
-}
-
-.instrutor-stats__item--categories {
-  justify-content: flex-start;
-}
-
-/* Sobre mim */
-.instrutor-about {
-  background: var(--color-white);
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
-}
-
-.instrutor-about__title {
-  margin: 0 0 var(--space-4);
-  font-size: var(--text-lg);
-  font-weight: 700;
-  color: var(--color-gray-700);
-}
-
-.instrutor-about__text {
-  margin: 0;
-  color: var(--text);
-  line-height: 1.6;
-  font-family: var(--font-serif);
-}
-
-/* Coluna direita — fixa ao rolar (telas grandes) */
-.instrutor-page__right {
-  position: sticky;
-  top: var(--space-6);
-  align-self: start;
-}
-
-.instrutor-booking {
-  background: var(--color-white);
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
-  box-shadow: var(--shadow-md);
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-.instrutor-booking__price-row {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--space-4);
-  margin-bottom: var(--space-5);
-}
-
-.instrutor-booking__price {
-  margin: 0;
-  line-height: 1.1;
-}
-
-.instrutor-booking__amount {
-  display: block;
-  font-size: var(--text-2xl);
-  font-weight: 700;
-  color: var(--color-gray-700);
-  letter-spacing: -0.02em;
-}
-
-.instrutor-booking__unit {
-  display: block;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-top: var(--space-1);
-}
-
-.instrutor-booking__duration {
-  margin: 0;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--color-primary);
-  text-align: right;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.instrutor-booking__cta {
-  width: 100%;
-  padding: 0.95rem 1.25rem;
-  font-size: var(--text-md);
-  margin-bottom: var(--space-4);
-}
-
-.instrutor-booking__actions {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-2);
-  width: 100%;
-}
-
-.instrutor-booking__action {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  min-width: 0;
-  min-height: 4rem;
-  padding: var(--space-2) 0.35rem;
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-md);
-  background: var(--color-gray-100);
-  cursor: pointer;
-  transition: background 120ms ease, border-color 120ms ease;
-}
-
-.instrutor-booking__action:hover {
-  background: var(--color-primary-light);
-  border-color: rgba(10, 75, 170, 0.25);
-}
-
-.instrutor-booking__action-emoji {
-  font-size: 1.25rem;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
-.instrutor-booking__action-text {
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--color-gray-700);
-  text-align: center;
-  line-height: 1.2;
-  max-width: 100%;
-  overflow-wrap: anywhere;
-}
-
-.instrutor-booking__login-hint {
-  margin: var(--space-4) 0 0;
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  text-align: center;
-  line-height: 1.4;
-}
-
 .instrutor-not-found {
   text-align: center;
   padding: var(--space-12) var(--space-4);
@@ -260,23 +31,121 @@
   .instrutor-page__grid {
     grid-template-columns: 1fr;
   }
+}
 
-  .instrutor-page__right {
-    position: static;
-  }
+/* ==========================================================================
+   Estados da página (carregando / erro / não encontrado)
+   Reutiliza o mesmo "esqueleto" visual para os 3 casos — modular e escalável.
+   ========================================================================== */
 
-  .instrutor-stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.instrutor-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  max-width: 32rem;
+  margin-inline: auto;
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.instrutor-status__title {
+  margin: 0;
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-gray-700);
+  letter-spacing: -0.02em;
+}
+
+.instrutor-status__text {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-height: 1.5;
+  font-family: var(--font-serif);
+}
+
+.instrutor-status .btn {
+  margin-top: var(--space-2);
+}
+
+/* ---------- Carregando ---------- */
+
+.instrutor-status--loading {
+  border-style: dashed;
+}
+
+.instrutor-status__spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid var(--color-primary-light);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: instrutor-status-spin 0.7s linear infinite;
+}
+
+@keyframes instrutor-status-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
-@media (max-width: 480px) {
-  .instrutor-profile__header {
-    flex-direction: column;
-    align-items: flex-start;
+@media (prefers-reduced-motion: reduce) {
+  .instrutor-status__spinner {
+    animation-duration: 1.6s;
   }
+}
 
-  .instrutor-stats {
-    grid-template-columns: 1fr;
+/* ---------- Erro ---------- */
+
+.instrutor-status--error {
+  border-color: rgba(227, 0, 15, 0.25);
+  background: rgba(227, 0, 15, 0.04);
+}
+
+.instrutor-status--error .instrutor-status__icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(227, 0, 15, 0.1);
+  color: var(--color-tertiary);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.instrutor-status--error .instrutor-status__title {
+  color: #8a0009;
+}
+
+/* ---------- Não encontrado ---------- */
+/* Mesmo padrão visual do "instrutor-status", com tom neutro (não é erro de rede) */
+
+.instrutor-status--empty .instrutor-status__icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-gray-100);
+  color: var(--text-muted);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Responsivo: reduz respiro em telas menores */
+@media (max-width: 480px) {
+  .instrutor-status {
+    padding: var(--space-8) var(--space-4);
   }
 }

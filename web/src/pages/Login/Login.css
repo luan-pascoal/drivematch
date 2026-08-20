@@ -56,12 +56,10 @@
 
 .login-form__submit {
   width: 100%;
-  margin-top: var(--space-2);
 }
 
 .login-form__forgot {
   text-align: center;
-  margin-top: calc(-1 * var(--space-2));
 }
 
 .login-form__success {

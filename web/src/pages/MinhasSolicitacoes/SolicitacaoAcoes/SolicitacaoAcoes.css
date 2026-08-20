@@ -1,0 +1,52 @@
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease, transform 100ms ease;
+}
+
+.icon-btn:active {
+  transform: translateY(1px);
+}
+
+.icon-btn--accept svg {
+  color: var(--color-primary);
+}
+
+.icon-btn--accept:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.icon-btn--reject svg {
+  color: var(--color-tertiary);
+}
+
+.icon-btn--reject:hover {
+  border-color: var(--color-tertiary);
+  background: rgba(227, 0, 15, 0.07);
+}
+
+.solic-card__confirm {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.solic-card__confirm-text {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.btn--sm {
+    padding: 0.35rem 0.75rem;
+    font-size: var(--text-xs);
+}
