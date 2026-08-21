@@ -29,12 +29,15 @@
 /* ── Grid principal: coluna esquerda (foto + aula) | coluna direita (perfil) ── */
 .editar-instrutor-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas:
-    "foto  perfil"
-    "aula  perfil";
+  grid-template-columns: 1fr 1.3fr;
   gap: var(--space-6);
   align-items: start;
+}
+
+/* ── Coluna esquerda: empilha foto e aula com espaçamento próprio ── */
+.editar-instrutor-coluna-esquerda {
+  display: grid;
+  gap: var(--space-5);
 }
 
 /* ── Cards de formulário ── */
@@ -45,10 +48,6 @@
   padding: var(--space-6);
   box-shadow: var(--shadow-sm);
 }
-
-.editar-instrutor-card--foto  { grid-area: foto; }
-.editar-instrutor-card--perfil { grid-area: perfil; }
-.editar-instrutor-card--aula  { grid-area: aula; }
 
 /* ── Cabeçalho de cada card ── */
 .editar-instrutor-card__header {
@@ -327,10 +326,6 @@
 @media (max-width: 860px) {
   .editar-instrutor-grid {
     grid-template-columns: 1fr;
-    grid-template-areas:
-      "foto"
-      "perfil"
-      "aula";
   }
 
   .editar-instrutor-page {
@@ -350,4 +345,35 @@
   .zona-perigo__acoes {
     flex-direction: column;
   }
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+    line-height: 1.5;
+
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-gray-200) transparent;
+}
+
+/* Chrome, Edge, Safari (WebKit) */
+.textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+.textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.textarea::-webkit-scrollbar-thumb {
+    background-color: var(--color-gray-200);
+    border-radius: var(--radius-sm);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.textarea::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-primary-light);
 }

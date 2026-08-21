@@ -23,7 +23,8 @@ export function EditarPerfilInstrutor({ dadosUsuario, usuario, msgErro, atualiza
     const [fotoSelecionada, setFotoSelecionada] = useState(null);
     const [carregandoFoto, setCarregandoFoto] = useState(false);
     const [previewFoto, setPreviewFoto] = useState(null);
-    const [msgSucesso, setMsgSucesso] = useState('');
+    const [msgSucessoPerfil, setMsgSucessoPerfil] = useState('');
+    const [msgSucessoAula, setMsgSucessoAula] = useState('');
     const [cidadeBusca, setCidadeBusca] = useState("");
     const [mostrarSugestoes, setMostrarSugestoes] = useState(false);
     const [cidadeAlterada, setCidadeAlterada] = useState(false);
@@ -104,6 +105,7 @@ export function EditarPerfilInstrutor({ dadosUsuario, usuario, msgErro, atualiza
         reset({
             nome: dadosUsuario.nome,
             email: dadosUsuario.email,
+            descricao : dadosUsuario.descricao ?? '',
             cpf: dadosUsuario.cpf?.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'),
             genero: dadosUsuario.genero === "M" ? "Masculino" : "Feminino",
             cnh: dadosUsuario.cnh,
@@ -119,19 +121,21 @@ export function EditarPerfilInstrutor({ dadosUsuario, usuario, msgErro, atualiza
         // isDirty seria true se QUALQUER campo da página mudasse, incluindo campos de aula.
         // Logo, temos q usar dirtyFields => rastreia campo a campo, então conseguimos saber exatamente
         // quais campos do perfil foram alterados.
-        const perfilAlterado = dirtyFields.nome || dirtyFields.email || dirtyFields.genero;
+        const perfilUsuarioAlterado  = dirtyFields.nome || dirtyFields.email || dirtyFields.genero;
 
-        if (!perfilAlterado && !cidadeAlterada) {
-            setMsgSucesso('Todos os dados estão salvos!')
+        const perfilInstrutorAlterado = cidadeAlterada || dirtyFields.descricao;
+
+        if (!perfilUsuarioAlterado  && !perfilInstrutorAlterado) {
+            setMsgSucessoPerfil('Perfil atualizado com sucesso!');
             setTimeout(() => {
-                setMsgSucesso('');
+                setMsgSucessoPerfil('');
             }, 5000);
             return;
         }
 
         let erros = [];
 
-        if (perfilAlterado) {
+        if (perfilUsuarioAlterado ) {
 
             const respostaPerfil = await axios.put('/api/usuarios/', {
                 nome: data.nome,
@@ -156,10 +160,11 @@ export function EditarPerfilInstrutor({ dadosUsuario, usuario, msgErro, atualiza
 
         }
 
-        if (cidadeAlterada) {
+        if (perfilInstrutorAlterado) {
 
-            const respostaInstrutor = await axios.put('/api/instrutores/cidade', {
-                cidade_id: data.cidade_id
+            const respostaInstrutor = await axios.put('/api/instrutores/perfil', {
+                cidade_id: data.cidade_id,
+                descricao: data.descricao
             }, {
                 validateStatus: () => true,
                 withCredentials: true
@@ -185,10 +190,10 @@ export function EditarPerfilInstrutor({ dadosUsuario, usuario, msgErro, atualiza
 
         setArrayErrosBackend([]);
         await carregarUsuario();
-        setMsgSucesso('Perfil atualizado com sucesso!')
+        setMsgSucessoPerfil('Perfil atualizado com sucesso!')
         // navigate("/", { state: { msgSucesso: "Perfil atualizado com sucesso!" } });
         setTimeout(() => {
-            setMsgSucesso('');
+            setMsgSucessoPerfil('')
         }, 5000);
 
     }
@@ -278,9 +283,9 @@ export function EditarPerfilInstrutor({ dadosUsuario, usuario, msgErro, atualiza
         const aulaAlterada = dirtyFields.categoria || dirtyFields.preco || dirtyFields.periodos;
 
         if (!aulaAlterada) {
-            setMsgSucesso('Todos os dados estão salvos!')
+            setMsgSucessoAula('Todos os dados estão salvos!')
             setTimeout(() => {
-                setMsgSucesso('');
+                setMsgSucessoAula('')
             }, 5000);
             return;
         }
@@ -301,10 +306,10 @@ export function EditarPerfilInstrutor({ dadosUsuario, usuario, msgErro, atualiza
             setArrayErrosBackend([]);
             await atualizarUsuario();
             await carregarUsuario();
-            setMsgSucesso('Perfil atualizado com sucesso!')
+            setMsgSucessoAula('Perfil atualizado com sucesso!')
             // navigate("/", { state: { msgSucesso: "Perfil atualizado com sucesso!" } });
             setTimeout(() => {
-                setMsgSucesso('');
+                setMsgSucessoAula('');
             }, 5000);
         }
 
@@ -406,13 +411,13 @@ export function EditarPerfilInstrutor({ dadosUsuario, usuario, msgErro, atualiza
         normalizar(cidade.nome).includes(normalizar(cidadeBusca))
     ).slice(0, 10);
 
-    
-    return (
+        return (
         <>
             <AppLayout
                 headerRight={<SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} tipoUsuario={usuario.usuario.tipo} /> || <SiteHeaderGuestActions />}
                 footerRight="Edição de perfil"
             >
+              <div className="stack stack--lg">
                 {/* Se alertaSucesso tiver texto, renderiza o AlertaSucesso
                     onClose zera o alertaSucesso, fazendo o componente sumir */}
                 {alertaSucesso && (
@@ -434,95 +439,211 @@ export function EditarPerfilInstrutor({ dadosUsuario, usuario, msgErro, atualiza
                     </div>
                 )}
 
-                {/* Grid principal: [foto | perfil] / [aula | perfil] */}
+                {/* Grid principal: coluna esquerda (foto + aula) | coluna direita (perfil) */}
                 <div className="editar-instrutor-grid">
 
-                    {/* ── Card: Atualizar Foto ── */}
-                    <form className="card editar-instrutor-card--foto" onSubmit={handleSubmit(salvarFoto)}>
-                        <div className="card__header">
-                            <h2 className="card__title">Atualizar Foto</h2>
-                            <p className="card__subtitle">
-                                Envie uma nova foto de perfil e clique em salvar.
-                            </p>
-                        </div>
+                    <div className="editar-instrutor-coluna-esquerda">
 
-                        <div className="card__body stack">
-                            <div className="foto__body">
+                        {/* ── Card: Atualizar Foto ── */}
+                        <form className="card editar-instrutor-card--foto" onSubmit={handleSubmit(salvarFoto)}>
+                            <div className="card__header">
+                                <h2 className="card__title">Atualizar Foto</h2>
+                                <p className="card__subtitle">
+                                    Envie uma nova foto de perfil e clique em salvar.
+                                </p>
+                            </div>
+
+                            <div className="card__body stack">
+                                <div className="foto__body">
+
+                                    <div className="field">
+                                        <span className="label">Foto atual</span>
+                                        {srcFoto ? (
+                                            <img
+                                                src={srcFoto}
+                                                width="120"
+                                                className="editar-instrutor-foto"
+                                                alt="Foto de perfil atual"
+                                            />
+                                        ) : (
+                                            <p className="hint">Nenhuma foto cadastrada no momento.</p>
+                                        )}
+                                    </div>
+
+                                    <div className="field">
+                                        <span className="label">Nova foto</span>
+                                        {previewFoto ? (
+                                            <img
+                                                className="editar-instrutor-foto"
+                                                width="120"
+                                                src={previewFoto}
+                                                alt="Pré-visualização da nova foto"
+                                            />
+                                        ) : null}
+                                    </div>
+                                </div>
 
                                 <div className="field">
-                                    <span className="label">Foto atual</span>
-                                    {srcFoto ? (
-                                        <img
-                                            src={srcFoto}
-                                            width="120"
-                                            className="editar-instrutor-foto"
-                                            alt="Foto de perfil atual"
-                                        />
-                                    ) : (
-                                        <p className="hint">Nenhuma foto cadastrada no momento.</p>
+                                    <label htmlFor="nova-foto" className="label foto-upload__area">
+                                        <p className="foto-upload__text">Escolher foto de perfil</p>
+                                        <p className="foto-upload__hint">PNG, JPEG ou WebP · máximo 2 MB</p>
+                                    </label>
+                                    <input
+                                        id="nova-foto"
+                                        className="foto-upload__input"
+                                        ref={inputFotoRef}
+                                        type="file"
+                                        onChange={selecionarFoto}
+                                        accept="image/png,image/jpeg,image/webp"
+                                        {...register('foto', {
+                                            validate: (files) => {
+                                                const file = files?.[0];
+                                                if (!file) return true;
+                                                if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
+                                                    return 'Tipo de arquivo inválido';
+                                                }
+                                                if (file.size > 2 * 1024 * 1024) {
+                                                    return 'Arquivo deve ter no máximo 2MB';
+                                                }
+                                                return true;
+                                            },
+                                        })}
+                                    />
+                                </div>
+
+                                {msgSucessoFoto && (
+                                    <div className="alert alert--success" role="status">{msgSucessoFoto}</div>
+                                )}
+
+                                {msgErroFoto && (
+                                    <p className="error-message" role="alert">{msgErroFoto}</p>
+                                )}
+                            </div>
+
+                            <div className="card__footer">
+                                <button
+                                    type="submit"
+                                    className="btn btn--square btn--primary"
+                                    disabled={carregandoFoto}
+                                >
+                                    {carregandoFoto ? "Salvando..." : "Salvar nova foto"}
+                                </button>
+                            </div>
+                        </form>
+
+                        {/* ── Card: Atualizar Aula ── */}
+                        <form className="editar-instrutor-card editar-instrutor-card--aula" onSubmit={handleSubmit(salvarAula)}>
+                            <div className="editar-instrutor-card__header">
+                                <h2 className="editar-instrutor-card__title">Atualizar Aula</h2>
+                                <p className="editar-instrutor-card__description">
+                                    Atualize as informações da sua aula exibidas em seu perfil.
+                                </p>
+                            </div>
+
+                            <div className="editar-instrutor-card__body">
+
+                                <div className="field">
+                                    <label htmlFor="categoria" className="label">Categoria</label>
+                                    <select
+                                        id="categoria"
+                                        className="input input--square"
+                                        {...register("categoria", {
+                                            validate: (value) => {
+                                                return value !== "0";
+                                            },
+                                        })}
+                                    >
+                                        <option value="0">Selecione a categoria de suas aulas...</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="AB">AB</option>
+                                    </select>
+                                    {errors?.categoria?.type === 'validate' && (
+                                        <p className="error-message">Categoria é obrigatória.</p>
                                     )}
                                 </div>
 
                                 <div className="field">
-                                    <span className="label">Nova foto</span>
-                                    {previewFoto ? (
-                                        <img
-                                            className="editar-instrutor-foto"
-                                            width="120"
-                                            src={previewFoto}
-                                            alt="Pré-visualização da nova foto"
-                                        />
-                                    ) : null}
+                                    <label htmlFor="preco" className="label">Preço (50min)</label>
+                                    <input
+                                        id="preco"
+                                        className="input input--square"
+                                        type="text"
+                                        placeholder="Preço (50min)"
+                                        onKeyDown={handleKeyDown}
+                                        autoComplete="price"
+                                        {...register("preco", {
+                                            onChange: formatarPreco,
+                                            required: true,
+                                            validate: {
+                                                apenasNumero: (value) => {
+                                                    const normalizado = value.replace(/\./g, '').replace(',', '.');
+                                                    return !isNaN(parseFloat(normalizado));
+                                                },
+                                                maiorQueZero: (value) => {
+                                                    const normalizado = value.replace(/\./g, '').replace(',', '.');
+                                                    return parseFloat(normalizado) > 0;
+                                                }
+                                            }
+                                        })}
+                                    />
+                                    {errors?.preco?.type === 'required' && (
+                                        <p className="error-message">Preço é obrigatório.</p>
+                                    )}
+                                    {errors?.preco?.type === 'apenasNumero' && (
+                                        <p className="error-message">Digite apenas números.</p>
+                                    )}
+                                    {errors?.preco?.type === 'maiorQueZero' && (
+                                        <p className="error-message">Digite um número maior que zero.</p>
+                                    )}
                                 </div>
+
+                                <div className="field">
+                                    <label className="label" id="periodo-label">Período</label>
+                                    <div
+                                        className="periodo-group"
+                                        role="group"
+                                        aria-labelledby="periodo-label"
+                                    >
+                                        {PERIODOS.map(periodo => (
+                                            <label key={periodo.id} className="periodo-option">
+                                                <input
+                                                    type="checkbox"
+                                                    className="periodo-option__checkbox"
+                                                    {...register(`periodos.${periodo.id}`, {
+                                                        validate: () => {
+                                                            // getValues : Retorna o valor atual de um campo
+                                                            // Nesse caso (checkbox) vai retornar um array, ex: {1: true, 2: false, 3: true } 
+                                                            const periodos = getValues('periodos');
+                                                            // Object.values pega so os valores (true ou false)
+                                                            // .some(v => v === true) Retorna true se PELO MENOS UM valor for true
+                                                            return Object.values(periodos).some(v => v === true) || 'Selecione ao menos um período.';
+                                                        }
+                                                    })}
+                                                />
+                                                {periodo.nome}
+                                            </label>
+                                        ))}
+                                    </div>
+                                    {errors?.periodos?.[PERIODOS[0].id]?.type === 'validate' && (
+                                        <p className="error-message">Selecione ao menos um período.</p>
+                                    )}
+                                </div>
+                                {msgSucessoAula && (
+                                    <p className="editar-instrutor__success" role="status">
+                                        {msgSucessoAula}
+                                    </p>
+                                )}
                             </div>
 
-                            <div className="field">
-                                <label htmlFor="nova-foto" className="label foto-upload__area">
-                                    <p className="foto-upload__text">Escolher foto de perfil</p>
-                                    <p className="foto-upload__hint">PNG, JPEG ou WebP · máximo 2 MB</p>
-                                </label>
-                                <input
-                                    id="nova-foto"
-                                    className="foto-upload__input"
-                                    ref={inputFotoRef}
-                                    type="file"
-                                    onChange={selecionarFoto}
-                                    accept="image/png,image/jpeg,image/webp"
-                                    {...register('foto', {
-                                        validate: (files) => {
-                                            const file = files?.[0];
-                                            if (!file) return true;
-                                            if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
-                                                return 'Tipo de arquivo inválido';
-                                            }
-                                            if (file.size > 2 * 1024 * 1024) {
-                                                return 'Arquivo deve ter no máximo 2MB';
-                                            }
-                                            return true;
-                                        },
-                                    })}
-                                />
+                            <div className="editar-instrutor-card__footer">
+                                <button type="submit" className="btn btn--square btn--primary">
+                                    Salvar dados
+                                </button>
                             </div>
+                        </form>
 
-                            {msgSucessoFoto && (
-                                <div className="alert alert--success" role="status">{msgSucessoFoto}</div>
-                            )}
-
-                            {msgErroFoto && (
-                                <p className="error-message" role="alert">{msgErroFoto}</p>
-                            )}
-                        </div>
-
-                        <div className="card__footer">
-                            <button
-                                type="submit"
-                                className="btn btn--square btn--primary"
-                                disabled={carregandoFoto}
-                            >
-                                {carregandoFoto ? "Salvando..." : "Salvar nova foto"}
-                            </button>
-                        </div>
-                    </form>
+                    </div>
 
                     {/* ── Card: Dados do Perfil ── */}
                     <form className="editar-instrutor-card editar-instrutor-card--perfil" onSubmit={handleSubmit(salvar)}>
@@ -578,6 +699,27 @@ export function EditarPerfilInstrutor({ dadosUsuario, usuario, msgErro, atualiza
                                 )}
                                 {errors?.email?.type === 'validate' && (
                                     <p className="error-message">O e-mail informado é inválido.</p>
+                                )}
+                            </div>
+
+                            <div className="field">
+                                <label htmlFor="descricao" className="label">Descrição </label>
+                                <textarea
+                                    id="descricao"
+                                    className="input input--square textarea"
+                                    placeholder='Fale um pouco sobre você e sua experiência como instrutor'
+                                    rows={5}
+                                    maxLength={500}
+                                    {...register("descricao", {
+                                        maxLength: 500,
+                                        pattern: { value: /^[A-Za-zÀ-ÿ0-9\s.,!?()-]+$/ },
+                                    })}
+                                />
+                                {errors?.descricao?.type === 'maxLength' && (
+                                    <p className="error-message">A descrição deve ter no máximo 500 caracteres.</p>
+                                )}
+                                {errors?.descricao?.type === 'pattern' && (
+                                    <p className="error-message">A descrição contém caracteres não permitidos.</p>
                                 )}
                             </div>
 
@@ -697,123 +839,9 @@ export function EditarPerfilInstrutor({ dadosUsuario, usuario, msgErro, atualiza
                                 </button>
                             </div>
 
-                            {msgSucesso && (
+                            {msgSucessoPerfil && (
                                 <p className="editar-instrutor__success" role="status">
-                                    {msgSucesso}
-                                </p>
-                            )}
-
-                        </div>
-
-                        <div className="editar-instrutor-card__footer">
-                            <button type="submit" className="btn btn--square btn--primary">
-                                Salvar dados
-                            </button>
-                        </div>
-                    </form>
-
-                    {/* ── Card: Atualizar Aula ── */}
-                    <form className="editar-instrutor-card editar-instrutor-card--aula" onSubmit={handleSubmit(salvarAula)}>
-                        <div className="editar-instrutor-card__header">
-                            <h2 className="editar-instrutor-card__title">Atualizar Aula</h2>
-                            <p className="editar-instrutor-card__description">
-                                Atualize as informações da sua aula exibidas em seu perfil.
-                            </p>
-                        </div>
-
-                        <div className="editar-instrutor-card__body">
-
-                            <div className="field">
-                                <label htmlFor="categoria" className="label">Categoria</label>
-                                <select
-                                    id="categoria"
-                                    className="input input--square"
-                                    {...register("categoria", {
-                                        validate: (value) => {
-                                            return value !== "0";
-                                        },
-                                    })}
-                                >
-                                    <option value="0">Selecione a categoria de suas aulas...</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="AB">AB</option>
-                                </select>
-                                {errors?.categoria?.type === 'validate' && (
-                                    <p className="error-message">Categoria é obrigatória.</p>
-                                )}
-                            </div>
-
-                            <div className="field">
-                                <label htmlFor="preco" className="label">Preço (50min)</label>
-                                <input
-                                    id="preco"
-                                    className="input input--square"
-                                    type="text"
-                                    placeholder="Preço (50min)"
-                                    onKeyDown={handleKeyDown}
-                                    autoComplete="price"
-                                    {...register("preco", {
-                                        onChange: formatarPreco,
-                                        required: true,
-                                        validate: {
-                                            apenasNumero: (value) => {
-                                                const normalizado = value.replace(/\./g, '').replace(',', '.');
-                                                return !isNaN(parseFloat(normalizado));
-                                            },
-                                            maiorQueZero: (value) => {
-                                                const normalizado = value.replace(/\./g, '').replace(',', '.');
-                                                return parseFloat(normalizado) > 0;
-                                            }
-                                        }
-                                    })}
-                                />
-                                {errors?.preco?.type === 'required' && (
-                                    <p className="error-message">Preço é obrigatório.</p>
-                                )}
-                                {errors?.preco?.type === 'apenasNumero' && (
-                                    <p className="error-message">Digite apenas números.</p>
-                                )}
-                                {errors?.preco?.type === 'maiorQueZero' && (
-                                    <p className="error-message">Digite um número maior que zero.</p>
-                                )}
-                            </div>
-
-                            <div className="field">
-                                <label className="label" id="periodo-label">Período</label>
-                                <div
-                                    className="periodo-group"
-                                    role="group"
-                                    aria-labelledby="periodo-label"
-                                >
-                                    {PERIODOS.map(periodo => (
-                                        <label key={periodo.id} className="periodo-option">
-                                            <input
-                                                type="checkbox"
-                                                className="periodo-option__checkbox"
-                                                {...register(`periodos.${periodo.id}`, {
-                                                    validate: () => {
-                                                        // getValues : Retorna o valor atual de um campo
-                                                        // Nesse caso (checkbox) vai retornar um array, ex: {1: true, 2: false, 3: true } 
-                                                        const periodos = getValues('periodos'); 
-                                                        // Object.values pega so os valores (true ou false)
-                                                        // .some(v => v === true) Retorna true se PELO MENOS UM valor for true
-                                                        return Object.values(periodos).some(v => v === true) || 'Selecione ao menos um período.';
-                                                    }
-                                                })}
-                                            />
-                                            {periodo.nome}
-                                        </label>
-                                    ))}
-                                </div>
-                                {errors?.periodos?.[PERIODOS[0].id]?.type === 'validate' && (
-                                    <p className="error-message">Selecione ao menos um período.</p>
-                                )}
-                            </div>
-
-                            {msgSucesso && (
-                                <p className="editar-instrutor__success" role="status">
-                                    {msgSucesso}
+                                    {msgSucessoPerfil}
                                 </p>
                             )}
 
@@ -867,8 +895,10 @@ export function EditarPerfilInstrutor({ dadosUsuario, usuario, msgErro, atualiza
                 )}
 
                 <MsgErrosBackEnd arrayErrosBackend={arrayErrosBackend} />
+              </div>
             </AppLayout>
         </>
     );
 
 }
+

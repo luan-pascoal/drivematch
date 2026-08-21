@@ -67,8 +67,8 @@ $rota->adicionar('PUT','/usuarios/senha','UsuarioController::editarSenha','logad
 $rota->adicionar('DELETE','/usuarios','UsuarioController::removerConta','logado');
 // Atualiza Dados Relacionados às Aulas do Instutor
 $rota->adicionar('PUT','/instrutores','InstrutorController::editarInstrutor', 'logado');
-// Atualiza Cidade do Instrutor
-$rota->adicionar('PUT','/instrutores/cidade','InstrutorController::editarCidade', 'logado');
+// Atualiza Descricao e Cidade do Instrutor
+$rota->adicionar('PUT','/instrutores/perfil','InstrutorController::editarDescrCidade', 'logado');
 // Remove a Conta do Instrutor
 $rota->adicionar('DELETE','/instrutores','InstrutorController::removerContaInstrutor','logado');
 // Retorna as marcas de veiuclos

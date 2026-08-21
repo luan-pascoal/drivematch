@@ -48,6 +48,7 @@ class Instrutor{
             i.Ins_cnh,
             i.Ins_aulapreco,
             i.Ins_aulatipo,
+            i.Ins_descricao,
             c.Cid_id,
             c.Cid_nome,
             p.Per_id,
@@ -168,10 +169,11 @@ class Instrutor{
     }
 
 
-    public function atualizarCidade($id, $cidadeId){
+    public function atualizarDescrCidade($id, $cidadeId, $descricao){
 
         $dados = [
-            "Ins_cidadeid" => $cidadeId
+            "Ins_cidadeid" => $cidadeId,
+            "Ins_descricao" => $descricao
         ];
 
         return DataBase::table('tb_instrutor')->update($dados)->where("Ins_id = :id", ["id" => $id]);

@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS Tb_Instrutor (
     Ins_aulapreco FLOAT       NOT NULL,
     Ins_aulatipo  CHAR(1)     NOT NULL,
     Ins_cidadeid  INT         NOT NULL,
+    Ins_descricao VARCHAR(500) NULL,
 
     CONSTRAINT fk_instrutor_usuario
         FOREIGN KEY (Ins_usuarioid)
@@ -148,6 +149,7 @@ CREATE TABLE IF NOT EXISTS Tb_Aula (
     Au_cidadeid    INT     NOT NULL,
     Au_usuarioid   INT     NOT NULL,
     Au_instrutorid INT     NOT NULL,
+    Au_status      VARCHAR(16) NOT NULL DEFAULT 'AGENDADA',
 
     CONSTRAINT fk_aula_cidade
         FOREIGN KEY (Au_cidadeid)

@@ -10,6 +10,7 @@ class InstrutorController extends UsuarioController
     private $periodo;
     private $categoria;
     private $preco;
+    private $descricao;
 
     /************************************************************
     *                        MÉTODOS                            *     
@@ -231,6 +232,7 @@ class InstrutorController extends UsuarioController
                 "idUsu" => $dados->Usu_id ?? null,
                 "nome" => $dados->Usu_nome ?? null,
                 "email" => $dados->Usu_email ?? null,
+                "descricao" => $dados->Ins_descricao ?? null,
                 "cpf" => $dados->Usu_cpf ?? null,
                 "cnh" => $dados->Ins_cnh ?? null,
                 "genero" => $dados->Usu_genero ?? null,
@@ -362,12 +364,14 @@ class InstrutorController extends UsuarioController
 
     }
 
-    public function editarCidade($data){
+    public function editarDescrCidade($data){
 
         $this->idInstrutor = $_SESSION['USER']['instrutor_id'];
         $this->cidadeId = $data["cidade_id"] ?? null;
+        $this->descricao = $data["descricao"] ?? null;
         $erros = [];
         $erros = $this->validarCidade($erros);
+        $erros = $this->validarDescricao($erros);
 
         if (!empty($erros)){
             http_response_code(422);
@@ -375,7 +379,7 @@ class InstrutorController extends UsuarioController
             return;
         }
 
-        $resultado = $this->instrutorModel->atualizarCidade($this->idInstrutor, $this->cidadeId);
+        $resultado = $this->instrutorModel->atualizarDescrCidade($this->idInstrutor, $this->cidadeId, $this->descricao);
 
         if($resultado === false){
             http_response_code(422);
@@ -603,4 +607,39 @@ class InstrutorController extends UsuarioController
 
         return $erros;
     }
+
+    private function validarDescricao($erros){
+
+        if ($this->descricao === null) {
+            return $erros;
+        }
+
+        $isString = is_string($this->descricao);
+
+        if(!$isString){
+            $erros["descricao"] = "Descrição deve ser uma string";
+            return $erros;
+        }
+
+        $descricao = trim($this->descricao);
+        $descricao = preg_replace("/\n{3,}/", "\n\n", $descricao);
+
+        if($descricao === ''){
+            return $erros;
+        }
+
+        if (mb_strlen($descricao) > 500) {
+            $erros["descricao"] = "A descrição deve ter no máximo 500 caracteres";
+            return $erros;
+        }
+
+        if (!preg_match("/^[A-Za-zÀ-ÿ0-9\s.,!?()-]+$/u", $descricao)) {
+            $erros["descricao"] = "A descrição contém caracteres não permitidos";
+            return $erros;
+        }
+
+        $this->descricao = $descricao;
+        return $erros;
+    }
+    
 }
