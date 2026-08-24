@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
+import exclamacao from "../../assets/images/icons/exclamacao.png";
 import axios from 'axios';
 import './SiteHeader.css';
 
@@ -32,13 +33,13 @@ export function SiteHeaderGuestActions() {
 }
 
 /** Botões e Dropdown do canto superior direito para Usuários Logados (Alunos) */
-export function SiteHeaderLoggedActions({ usuario, tipoUsuario, carregarUsuario }) {
-  
+export function SiteHeaderLoggedActions({ dadosUsuario, tipoUsuario, carregarUsuario }) {
+
   const navigate = useNavigate();
-  
+
   // Estado para controlar se o dropdown está aberto ou não
   const [menuAberto, setMenuAberto] = useState(false);
-  
+
   // Referência para o menu, usada para fechar ao clicar fora dele
   const menuRef = useRef();
 
@@ -61,7 +62,7 @@ export function SiteHeaderLoggedActions({ usuario, tipoUsuario, carregarUsuario 
   const fazerLogout = async () => {
     try {
       const resposta = await axios.delete('/api/logout');
-      
+
       if (resposta.status === 200 && resposta.data.sucesso === true) {
         await carregarUsuario();
         // redireciona
@@ -75,37 +76,39 @@ export function SiteHeaderLoggedActions({ usuario, tipoUsuario, carregarUsuario 
   };
 
   // Pega apenas o primeiro nome do usuário
-  const primeiroNome = usuario?.nome?.split(' ')[0] || 'Usuário';
+  const primeiroNome = dadosUsuario?.nome?.split(' ')[0] || 'Usuário';
 
   const isInstrutor = tipoUsuario === "instrutor";
+
+  const descricaoPendente = isInstrutor && !dadosUsuario?.descricao;
 
   return (
     <div className="user-menu" ref={menuRef}>
       {/* Botão que ativa o menu */}
-      <button 
-        className="user-menu__trigger" 
+      <button
+        className="user-menu__trigger"
         onClick={alternarMenu}
         aria-expanded={menuAberto}
         aria-haspopup="true"
         aria-label="Abrir menu"
       >
-        <img 
-          className="user-menu__avatar" 
-          src={ usuario?.foto
-          ? `http://localhost/MatchMarcha/uploads/${usuario.foto}`
-          : `https://ui-avatars.com/api/?name=${primeiroNome}&background=0A4BAA&color=FFFFFF`} 
-          alt={`Foto de ${primeiroNome}`} 
+        <img
+          className="user-menu__avatar"
+          src={dadosUsuario?.foto
+            ? `http://localhost/MatchMarcha/uploads/${dadosUsuario.foto}`
+            : `https://ui-avatars.com/api/?name=${primeiroNome}&background=0A4BAA&color=FFFFFF`}
+          alt={`Foto de ${primeiroNome}`}
         />
-        
+
         <span className="user-menu__nome">{primeiroNome}</span>
-        
+
         <span className={`user-menu__seta ${menuAberto ? 'aberta' : ''}`}>▼</span>
       </button>
 
       {/* O Dropdown em si */}
       {menuAberto && (
         <div className="user-menu__dropdown">
-          
+
           <div className="dropdown__secao dropdown__secao--tipo">
             <span className="dropdown__badge">{isInstrutor ? 'Instrutor' : 'Aluno'}</span>
           </div>
@@ -115,7 +118,17 @@ export function SiteHeaderLoggedActions({ usuario, tipoUsuario, carregarUsuario 
               <>
                 <Link to="/mensagens" onClick={() => setMenuAberto(false)}>Mensagens</Link>
                 <Link to="/minhas-aulas" onClick={() => setMenuAberto(false)}>Minhas Aulas</Link>
-                <Link to="/editar-perfil" onClick={() => setMenuAberto(false)}>Editar Perfil</Link>
+                <Link to="/editar-perfil" className="dropdown__link" onClick={() => setMenuAberto(false)}>
+                  Editar Perfil
+                  {descricaoPendente && (
+                    <img
+                      src={exclamacao}
+                      alt="Descrição pendente"
+                      title="Adicione uma descrição ao seu perfil"
+                      className="dropdown__alerta-icone"
+                    />
+                  )}
+                </Link>
                 <Link to="/veiculos" onClick={() => setMenuAberto(false)}>Meus Veiculos</Link>
                 <Link to="/minhas-solicitacoes" onClick={() => setMenuAberto(false)}>Minhas Solicitações</Link>
                 <Link to="/ajuda" onClick={() => setMenuAberto(false)}>Ajuda</Link>
@@ -137,7 +150,7 @@ export function SiteHeaderLoggedActions({ usuario, tipoUsuario, carregarUsuario 
               Sair da conta
             </button>
           </div>
-          
+
         </div>
       )}
     </div>

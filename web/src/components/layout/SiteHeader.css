@@ -2,151 +2,174 @@
    MENU DO USUÁRIO LOGADO (User Menu)
    ========================================= */
 
-   .user-menu {
-    position: relative; /* Importante para o dropdown se posicionar em relação a ele */
-  }
-  
-  /* O Botão de perfil (Foto + Nome) */
-  .user-menu__trigger {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 10px;
-    transition: background-color 0.2s;
-  }
-  
-  .user-menu__trigger:hover {
-    background-color: var(--color-primary-light); /* Um azul bem clarinho para dar feedback */
-  }
-  
-  .user-menu__avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%; /* Faz o círculo perfeito */
-    object-fit: cover;
-    border: 2px solid var(--color-primary);
-  }
-  
-  .user-menu__nome {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    color: var(--color-gray-700);
-    font-size: 1rem;
-  }
-  
-  .user-menu__seta {
-    font-size: 0.7rem;
-    color: var(--color-primary);
-    transition: transform 0.3s ease;
-  }
-  
-  .user-menu__seta.aberta {
-    transform: rotate(180deg);
-  }
-  
-  /* O Dropdown Box */
-  .user-menu__dropdown {
-    position: absolute;
-    top: 60px; /* Distância do topo */
-    right: 0;
-    width: 220px;
-    background-color: var(--color-white);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    z-index: 1000;
-    overflow: hidden;
-  }
-  
-  /* Divisões internas do dropdown */
-  .dropdown__secao {
-    padding: 15px;
-    border-bottom: 1px solid var(--color-gray-100);
-  }
-  
-  .dropdown__secao:last-child {
-    border-bottom: none;
-  }
-  
-  /* Parte 1: Badge de Aluno */
-  .dropdown__badge {
-    background-color: var(--color-secondary); /* Dourado */
-    color: var(--color-gray-700);
-    padding: 4px 12px;
-    border-radius: 5px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  
-  /* Parte 2: Links */
-  .dropdown__secao--links {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  .dropdown__secao--links a {
-    text-decoration: none;
-    color: var(--color-gray-700);
-    font-size: 0.95rem;
-    transition: color 0.2s;
-  }
-  
-  .dropdown__secao--links a:hover {
-    color: var(--color-primary);
-    font-weight: 600;
-  }
-  
-  /* Parte 3: Botão Sair */
-  .btn-sair {
-    width: 100%;
-    background: none;
-    border: none;
-    color: var(--color-tertiary); /* Vermelho */
-    text-align: left;
-    font-weight: bold;
-    font-size: 0.95rem;
-    cursor: pointer;
-    padding: 0;
-  }
-  
-  .btn-sair:hover {
-    text-decoration: underline;
-  }
-  
-  /* =========================================
+.user-menu {
+  position: relative;
+  /* Importante para o dropdown se posicionar em relação a ele */
+}
+
+/* O Botão de perfil (Foto + Nome) */
+.user-menu__trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 10px;
+  transition: background-color 0.2s;
+}
+
+.user-menu__trigger:hover {
+  background-color: var(--color-primary-light);
+  /* Um azul bem clarinho para dar feedback */
+}
+
+.user-menu__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  /* Faz o círculo perfeito */
+  object-fit: cover;
+  border: 2px solid var(--color-primary);
+}
+
+.user-menu__nome {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: var(--color-gray-700);
+  font-size: 1rem;
+}
+
+.user-menu__seta {
+  font-size: 0.7rem;
+  color: var(--color-primary);
+  transition: transform 0.3s ease;
+}
+
+.user-menu__seta.aberta {
+  transform: rotate(180deg);
+}
+
+/* O Dropdown Box */
+.user-menu__dropdown {
+  position: absolute;
+  top: 60px;
+  /* Distância do topo */
+  right: 0;
+  width: 220px;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* Divisões internas do dropdown */
+.dropdown__secao {
+  padding: 15px;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.dropdown__secao:last-child {
+  border-bottom: none;
+}
+
+/* Parte 1: Badge de Aluno */
+.dropdown__badge {
+  background-color: var(--color-secondary);
+  /* Dourado */
+  color: var(--color-gray-700);
+  padding: 4px 12px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Parte 2: Links */
+.dropdown__secao--links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dropdown__secao--links a {
+  text-decoration: none;
+  color: var(--color-gray-700);
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.dropdown__secao--links a:hover {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* Parte 3: Botão Sair */
+.btn-sair {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--color-tertiary);
+  /* Vermelho */
+  text-align: left;
+  font-weight: bold;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-sair:hover {
+  text-decoration: underline;
+}
+
+.dropdown__secao--links a.dropdown__link {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.dropdown__alerta-icone {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* =========================================
      RESPONSIVIDADE (Celulares)
      ========================================= */
-  @media (max-width: 768px) {
-    /* Esconde o nome e a setinha, deixa só a foto para economizar espaço no cabeçalho */
-    .user-menu__nome, 
-    .user-menu__seta {
-      display: none;
-    }
-  
-    /* O Dropdown no celular fica maior e melhor posicionado para toques (dedo) */
-    .user-menu__dropdown {
-      position: fixed; /* Fixa na tela */
-      top: 70px; 
-      right: 10px;
-      left: 10px; /* Faz ocupar quase toda a largura */
-      width: auto;
-    }
-  
-    /* Aumenta a área de toque (UX) nos links */
-    .dropdown__secao--links a {
-      padding: 10px 0; 
-      font-size: 1.1rem;
-    }
-    
-    .btn-sair {
-      padding: 10px 0;
-      font-size: 1.1rem;
-    }
+@media (max-width: 768px) {
+
+  /* Esconde o nome e a setinha, deixa só a foto para economizar espaço no cabeçalho */
+  .user-menu__nome,
+  .user-menu__seta {
+    display: none;
   }
+
+  /* O Dropdown no celular fica maior e melhor posicionado para toques (dedo) */
+  .user-menu__dropdown {
+    position: fixed;
+    /* Fixa na tela */
+    top: 70px;
+    right: 10px;
+    left: 10px;
+    /* Faz ocupar quase toda a largura */
+    width: auto;
+  }
+
+  /* Aumenta a área de toque (UX) nos links */
+  .dropdown__secao--links a {
+    padding: 10px 0;
+    font-size: 1.1rem;
+  }
+
+  .btn-sair {
+    padding: 10px 0;
+    font-size: 1.1rem;
+  }
+}

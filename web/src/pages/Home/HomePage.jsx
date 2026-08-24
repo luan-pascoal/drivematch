@@ -162,7 +162,7 @@ export function HomePage({ usuario, dadosUsuario, carregarUsuario, cidades }) {
     <AppLayout
       headerRight={
         usuario?.logado
-          ? <SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} tipoUsuario={usuario?.tipo} />
+          ? <SiteHeaderLoggedActions dadosUsuario={dadosUsuario} carregarUsuario={carregarUsuario} tipoUsuario={usuario?.tipo} />
           : <SiteHeaderGuestActions />
       }
       footerRight="Página Inicial"

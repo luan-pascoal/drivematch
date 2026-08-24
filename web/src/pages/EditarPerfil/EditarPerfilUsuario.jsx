@@ -274,7 +274,7 @@ export function EditarPerfilUsuario({ dadosUsuario, usuario, msgErro, atualizarU
 
     return (
         <AppLayout
-            headerRight={<SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} tipoUsuario={usuario.usuario.tipo} /> || <SiteHeaderGuestActions />}
+            headerRight={<SiteHeaderLoggedActions dadosUsuario={dadosUsuario} carregarUsuario={carregarUsuario} tipoUsuario={usuario.usuario.tipo} /> || <SiteHeaderGuestActions />}
             footerRight="Edição de perfil"
         >
             {/* Se alertaSucesso tiver texto, renderiza o AlertaSucesso

@@ -298,7 +298,7 @@ export function MinhasSolicitacoes({ usuario, dadosUsuario, carregarUsuario }) {
 
     return (
         <AppLayout
-            headerRight={<SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} tipoUsuario={usuario.usuario.tipo} />}
+            headerRight={<SiteHeaderLoggedActions dadosUsuario={dadosUsuario} carregarUsuario={carregarUsuario} tipoUsuario={usuario.usuario.tipo} />}
             footerRight={`Solicitações de ${usuario.usuario.nome}`}
         >
             <div className="stack stack--lg">

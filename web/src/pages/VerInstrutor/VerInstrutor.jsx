@@ -76,7 +76,7 @@ export function VerInstrutor({ usuario, dadosUsuario, carregarUsuario, cidades }
   if (carregando) {
     return (
       <AppLayout headerRight={
-        usuario?.logado ? <SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} /> : <SiteHeaderGuestActions />
+        usuario?.logado ? <SiteHeaderLoggedActions dadosUsuario={dadosUsuario} carregarUsuario={carregarUsuario} tipoUsuario={usuario.usuario.tipo} /> : <SiteHeaderGuestActions />
       }>
         <div className="instrutor-status instrutor-status--loading" role="status" aria-live="polite">
           <div className="instrutor-status__spinner" aria-hidden="true" />
@@ -90,7 +90,7 @@ export function VerInstrutor({ usuario, dadosUsuario, carregarUsuario, cidades }
   if (erro) {
     return (
       <AppLayout headerRight={
-        usuario?.logado ? <SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} /> : <SiteHeaderGuestActions />
+        usuario?.logado ? <SiteHeaderLoggedActions dadosUsuario={dadosUsuario} carregarUsuario={carregarUsuario} tipoUsuario={usuario.usuario.tipo} /> : <SiteHeaderGuestActions />
       }>
         <div className="instrutor-status instrutor-status--error" role="alert">
           <span className="instrutor-status__icon" aria-hidden="true">!</span>
@@ -108,7 +108,7 @@ export function VerInstrutor({ usuario, dadosUsuario, carregarUsuario, cidades }
   if (!instrutor) {
     return (
       <AppLayout headerRight={
-        usuario?.logado ? <SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} /> : <SiteHeaderGuestActions />
+        usuario?.logado ? <SiteHeaderLoggedActions dadosUsuario={dadosUsuario} carregarUsuario={carregarUsuario} tipoUsuario={usuario.usuario.tipo} /> : <SiteHeaderGuestActions />
       }>
         <div className="instrutor-status instrutor-status--empty">
           <span className="instrutor-status__icon" aria-hidden="true">?</span>
@@ -125,7 +125,7 @@ export function VerInstrutor({ usuario, dadosUsuario, carregarUsuario, cidades }
   return (
 
     <AppLayout headerRight={
-      usuario?.logado ? <SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} /> : <SiteHeaderGuestActions />
+      usuario?.logado ? <SiteHeaderLoggedActions dadosUsuario={dadosUsuario} carregarUsuario={carregarUsuario} tipoUsuario={usuario.usuario.tipo} /> : <SiteHeaderGuestActions />
     } footerRight={`Perfil de ${instrutor.nome}`}>
 
       <Link className="instrutor-page__back" to="/#instrutores">

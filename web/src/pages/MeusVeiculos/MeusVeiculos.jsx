@@ -40,7 +40,7 @@ export function MeusVeiculos({ veiculos, recarregarVeiculos, erroVeiculos, dados
 
     return (
         <AppLayout
-            headerRight={<SiteHeaderLoggedActions usuario={dadosUsuario} carregarUsuario={carregarUsuario} tipoUsuario={usuario.usuario.tipo} />}
+            headerRight={<SiteHeaderLoggedActions dadosUsuario={dadosUsuario} carregarUsuario={carregarUsuario} tipoUsuario={usuario.usuario.tipo} />}
             footerRight="Meus veículos"
             fullWidth={
                 <Carrossel
